@@ -1,332 +1,408 @@
 <html>
+
 <head>
     <meta name="viewport" content="width=device-width">
     <script src='file:///android_asset/app.js'></script>
 </head>
 <style>
-	body { background-color: #ffffff; 
-	font-size:25px;
-	
-	}
-	button{
-	    font-size:35px;
-	    border-radius:50px;
-	    
-	}
-    
-    #todo{
-     //   text-align:center;
-     height:200%;
+    body {
+        background-color: #ffffff;
+        font-size: 25px;
     }
-    input{
-        font-size:25px;
-      //  border-radius:10px;
-        border-style:solid;
+    button {
+        font-size: 35px;
+        border-radius: 50px;
+    }
+    #todo {
+        // text-align: center;
+        height: 200%;
+    }
+    input {
+        font-size: 25px;
+        // border-radius: 10px;
+        border-style: solid;
         background: #c5f5c5;
+        width: 100%;
+    }
+    .centradas {
+        // border-radius: 10px;
+        border-style: solid;
+    }
+    #clip {
+        height: 100%;
+        width: 100%;
+        background: #c3e534;
+    }
+    #precio {
+        background: #c5c5f5;
+    }
+     #fecha {
+        background: #c5c5f5;
+    }   
+    #nota{
         width:100%;
-    }
-    .centradas{
-      //  border-radius:10px;
-        border-style:solid;       
-    }
-    #clip{
-        height:100%;
-        width:100%;
-        background:#c3e534;
-    }
-    #precio{
-          background: #c5c5f5;
+        height:5%;
     }
 </style>
 
-<div id="todo">Para alluda habla al:<br> 209 665 8321
-<div id="intradas"><p></p>
-Nombre <input id="nombre" type="text" class="centradas"><bf>
-<p></p>
-Fecha del event <input id="fecha" type="date" class="centradas"><br>
-<p></p>
-Direccion <input id="direccion" type="text" class="centradas">
-<p></p>
-Telefono <input id="telefono" type="tel" class="centradas">
+<div id="todo">Para alluda habla al:
+    <br>209 665 8321
+    <div id="intradas">
+        <p></p>
+        Nombre
+        <input id="nombre" type="text" class="centradas">
+        <bf>
+            <p></p>
+            Fecha del event
+            <input id="fecha" type="date" class="centradas" readonly=true>
+            <br>
+            <p></p>
+            Direccion
+            <input id="direccion" type="text" class="centradas">
+            <p></p>
+            Telefono
+            <input id="telefono" type="tel" class="centradas">
 
 
 
-<p></p>
-Inicia <input id="inic" type="number" class="centradas" value=5 onchange="adjTime('in')">
-<p></p>
-Horas  <input id="horas" type="number" class="centradas" oninput="adjTime('h')">
-<p></p>
-Termina <input id="end" type="number" class="centradas"  value=5 oninput="adjTime('end')">
-<p></p>
+            <p></p>
+            Inicia
+            <input id="inic" type="number" class="centradas" value=5 onchange="adjTime('in')">
+            <p></p>
+            Horas
+            <input id="horas" type="number" class="centradas" oninput="adjTime('h')">
+            <p></p>
+            Termina
+            <input id="end" type="number" class="centradas" value=5 oninput="adjTime('end')">
+            <p></p>
 
-Precio/hora <input id="precio" type="number" class="centradas" oninput="setTotal()" readonly=true>
-<p></p>
-Deposito <input id="deposito" type="number" class="centradas" value=0 oninput="setTotal(this.value)">
+            Precio/hora
+            <input id="precio" type="number" class="centradas" oninput="setTotal()" readonly=true>
+            <p></p>
+            Deposito
+            <input id="deposito" type="number" class="centradas" value=0 oninput="setTotal(this.value)" readonly=true>
 
-<p></p>
-<p id="total">Total: </p>
-<p></p>
-<p id="resto">Restando</p>
+            <p></p>
+            <p id="total">Total:</p>
+            <p></p>
+            <p id="resto">Restando</p>
 
-<p></p>
-Nota <textarea id="nota" type="text" class="centradas"></textarea>
+            <p></p>
+            Nota
+            <textarea id="nota" type="text" class="centradas"></textarea>
 
 
-<br>
-<br>
-<button id="done" onclick="setFecha()">Enviar forma</button><br><br>
+            <br>
+            <br>
+            <button id="done" onclick="setFecha()">Enviar forma</button>
+            <br>
+            <br>
 
-<button onclick="copy()">Verificar</button><br><br>
-Para alluda habla al:<br> 209 665 8321
+            <button onclick="copy()">Verificar</button>
+            <br>
+            <br>Para alluda habla al:
+            <br>209 665 8321
 
-<textarea id="clip"   class="centradas"  readonly>===============</textarea><br>
+            <textarea id="clip" class="centradas" readonly>===============</textarea>
+            <br>
+    </div>
+
+
 </div>
 
 
-</div>
+<script>
+    //<p></p>
+    //Auto Off <input id="calc" type="checkbox" >
+    //<br>contrato <input id="contrato" type="checkbox" >
 
-
-<script> //<p></p>
-//Auto Off <input id="calc" type="checkbox" >
-//<br>contrato <input id="contrato" type="checkbox" >
-
-//<input type="date" data-date="" data-date-format="DD MMMM YYYY" value="2015-08-09">
-//https://jsonblob.com/api/d45d97cc-8cd8-11eb-afbf-45ceb407212d
+    //<input type="date" data-date="" data-date-format="DD MMMM YYYY" value="2015-08-09">
+    //https://jsonblob.com/api/d45d97cc-8cd8-11eb-afbf-45ceb407212d
 </script>
 
 <script>
-//link="https://jsonblob.com/api/d45d97cc-8cd8-11eb-afbf-45ceb407212d"
-// de forma=  https://jsonblob.com/47554397-8e50-11eb-81fd-a93d15366c8b
+    //link="https://jsonblob.com/api/d45d97cc-8cd8-11eb-afbf-45ceb407212d"
+    // de forma=  https://jsonblob.com/47554397-8e50-11eb-81fd-a93d15366c8b
 
-link="https://jsonblob.com/api/47554397-8e50-11eb-81fd-a93d15366c8b"
+    link = "https://jsonblob.com/api/47554397-8e50-11eb-81fd-a93d15366c8b"
 
     //Called after application is started.
-    eclip=document.getElementById("clip");
-      ecalc=document.getElementById("calc");
-      etotal=document.getElementById("total");  
-     ehoras=document.getElementById("horas");  
-    enombre=document.getElementById("nombre");
-    efecha=document.getElementById("fecha");
-    einic=document.getElementById("inic");
-    eprecio=document.getElementById("precio");
-    edeposito=document.getElementById("deposito");
-    eend=document.getElementById("end");
-    eresto=document.getElementById("resto");
-    edireccion=document.getElementById("direccion");
-    etelefono=document.getElementById("telefono");
-    enota=document.getElementById("nota");
-    econtrato=document.getElementById("contrato"); 
-    
-    var m= "Jan,Feb,Mar,Apr,May,Ju,Jul,Aug,Sep,Oct,Nov,Dec";
-    m=m.split(",");
+    eclip = document.getElementById("clip");
+    ecalc = document.getElementById("calc");
+    etotal = document.getElementById("total");
+    ehoras = document.getElementById("horas");
+    enombre = document.getElementById("nombre");
+    efecha = document.getElementById("fecha");
+    einic = document.getElementById("inic");
+    eprecio = document.getElementById("precio");
+    edeposito = document.getElementById("deposito");
+    eend = document.getElementById("end");
+    eresto = document.getElementById("resto");
+    edireccion = document.getElementById("direccion");
+    etelefono = document.getElementById("telefono");
+    enota = document.getElementById("nota");
+    econtrato = document.getElementById("contrato");
+
+    var m = "Jan,Feb,Mar,Apr,May,Ju,Jul,Aug,Sep,Oct,Nov,Dec";
+    m = m.split(",");
+     var continua = false, o={},aprovado=false, cl="_no_";
+
     start();
-    var continua=false;
-    function start(){
-           GetJ(link,function(obj){
-               var cl=prompt("Type Clave: ");
-             
-               if(obj.forma.enviada!=undefined){
-               if(obj.forma.status && !obj.forma.regresada){
-                if(cl===obj.forma.clave){
-               eprecio.value=obj.forma.precio;
-               efecha.value=obj.forma.fecha;
-                }
-                else{
-                    if(confirm("Introduce Clave de nuevo\n\nPara alluda habla al: 209 665 8321")){
-                        start();
-                        continua=true;
-                        
+ 
+    function start() {
+        var i=0;
+        GetJ(link, function(obj) {
+            cl = prompt("Type Clave: ");
+            if (obj.pending != undefined) {
+                for (i = 0; i < obj.pending.length; i++) {
+                     if (obj.pending[i].clave === cl) {
+                        //inicia proceso
+                        o = obj.pending[i];
+                        if (o.enviada != undefined) {
+                            if (o.status && !o.regresada) {
+                                if (cl === o.clave) {
+                                    aprovado=true;
+                                     continua = true;
+                                    eprecio.value = o.precio;
+                                    efecha.value = o.fecha;
+                                } else {
+                                    aprovado=false;
+                                    if (confirm("Introduce Clave de nuevo\n\nPara alluda habla al: 209 665 8321")) {
+                                       continua = true;
+                                        start();
+                           
+                                    } else continua = false;
+                                }
+                            } else alert("La forma ya a sido enviada o no esta activa, para preguntas llama al 209 665 8321")
+                        }
+                      i=obj.pending.length+3;
                     }
-                    else continua=false;
+               
                 }
-               }
-               }
-           });
-    }
-    
-    
-    function copy()
-    {
-      //  alert(einic.value);
-        var a=einic.value.split(" ")[0];
-        a=a.split(":")[0]*1+a.split(":")[1]*1;
-      //  var b=eend.value.split(" ")[0];
-      //  b=b.split(":")[0]*1+b.split(":")[1]*1;
-        var re=ehoras.value*eprecio.value-edeposito.value;
-        if(re<0) re="??????????"
-      
-               var t=ehoras.value*eprecio.value;
-      var r=t-edeposito.value;
-                 etotal.innerHTML="Total: "+t
-                  eresto.innerHTML="Resto: "+r;     
-          
-      
-        
-        var fe=efecha.value.split("-");
-        fe=m[fe[1]*1-1]+" "+fe[2]+" de "+fe[0];
-      //  alert(eend.value-einic.value);
-   //  alert(fe);
-   eclip.value=""
-   var q=""
-                 if(edeposito.value*1===0) q="* P E N D I N G *"
-
+                //si no lo encontro
+                if(i===obj.pending.length) {
+                                              if (confirm("Introduce Clave de nuevo\n\nPara alluda habla al: 209 665 8321")) {
+                                        continua =true;
+                                        start();
+                                    
+                                    } else continua = false;
+                }
  
-     eclip.value=q+"\n"+fe+"\n\nNombre: "+enombre.value+"\nTelefono: "+etelefono.value+
-       "\nPrecio: "+eprecio.value+"\nInicia: "+einic.value+"\nDeposito: "+edeposito.value+
-       "\nTermina: "+eend.value+"\nHoras: "+ehoras.value+"\nTotal: "+t+"\nRestando: "+r+"\nDireccion: "+
-       edireccion.value+"\nNota: "+enota.value+
-       "\n\nCreated: "+new Date().toString()
- 
-  
-  }
-  var re=0,auto=true;
-  
-  
-  function setFecha(){
-      if(continua){
-          GetJ(link,function(obj){
-             
-              
-         var fe=efecha.value.split("-");
-        fe=m[fe[1]*1-1]+" "+fe[2]+" de "+fe[0];
-        
-        var a=einic.value.split(" ")[0];
-        a=a.split(":")[0]*1+a.split(":")[1]*1;
-   //     var b=eend.value.split(" ")[0];
-   //     b=b.split(":")[0]*1+b.split(":")[1]*1;
-        re=ehoras.value*eprecio.value-edeposito.value;
-        if(re<0) re="??????????"
-        
-             var t=ehoras.value*eprecio.value;
-      var r=t-edeposito.value
-                 etotal.innerHTML="Total: "+t
-                  eresto.innerHTML="Resto: "+r;     
-        
-        
-        
-        
-        var ob=obj.forma;
-        ob.created=new Date().toString();
-        ob.fecha=fe;
-        ob.nombre=enombre.value;
-        ob.telefono=etelefono.value;
-        ob.direccion=edireccion.value;
-        ob.precio=eprecio.value;
-        ob.horas=ehoras.value;
-        ob.deposito=edeposito.value;
-        ob.inicia=einic.value;
-        ob.termina=eend.value;
-        ob.resto=r;
-        ob.total=t;
-        ob.nota=enota.value;
-        ob.contrato=false;
-        obj.entregada=true;
- 
-            obj.forma=ob;
-            obj.formas.push(ob);
-   var q="";
-   eclip.value="";
-                 if(edeposito.value*1===0) q="* P E N D I N G *"
-
-     eclip.value=q+"\n"+fe+"\nNombre: "+enombre.value+"\nTelefono: "+etelefono.value+
-       "\nPrecio: "+eprecio.value+"\nInicia: "+einic.value+"\nDeposito: "+edeposito.value+
-       "\nTermina: "+eend.value+"\nHoras: "+ehoras.value+"\nTotal: "+t+"\nRestando: "+r+"\nDireccion: "+
-       edireccion.value+"\nNota: "+enota.value+
-      "\n\nCreated: "+new Date().toString()
- //      eclip.select();
- // document.execCommand("copy");
-  
-  
-  UpdateJ(link,obj);
-  
+            }
         });
-      }
-      else{
-                            if(confirm("Introduce Clave de nuevo\n\nPara alluda habla al: 209 665 8321")){
-                        start();
-                        continua=true;
-                    }
-                    else continua=false;
-          
-      }
+    }
+
+    function copy() {
+        //  alert(einic.value);
+        var a = einic.value.split(" ")[0];
+        a = a.split(":")[0] * 1 + a.split(":")[1] * 1;
+        //  var b=eend.value.split(" ")[0];
+        //  b=b.split(":")[0]*1+b.split(":")[1]*1;
+        var re = ehoras.value * eprecio.value - edeposito.value;
+        if (re < 0) re = "??????????"
+
+        var t = ehoras.value * eprecio.value;
+        var r = t - edeposito.value;
+        etotal.innerHTML = "Total: " + t
+        eresto.innerHTML = "Resto: " + r;
+
+
+
+        var fe = efecha.value.split("-");
+        fe = m[fe[1] * 1 - 1] + " " + fe[2] + " de " + fe[0];
+        //  alert(eend.value-einic.value);
+        //  alert(fe);
+        eclip.value = ""
+        var q = ""
+        if (edeposito.value * 1 === 0) q = "* P E N D I N G *"
+
+
+        eclip.value = q + "\n" + fe + "\n\nNombre: " + enombre.value + "\nTelefono: " + etelefono.value +
+            "\nPrecio: " + eprecio.value + "\nInicia: " + einic.value + "\nDeposito: " + edeposito.value +
+            "\nTermina: " + eend.value + "\nHoras: " + ehoras.value + "\nTotal: " + t + "\nRestando: " + r + "\nDireccion: " +
+            edireccion.value + "\nNota: " + enota.value +
+            "\n\nCreated: " + new Date().toString()
+
+
+    }
+    var re = 0,
+        auto = true;
+
+
+    function setFecha() {
+        if (aprovado) {
+
+
+            GetJ(link, function(obj) {
   
+
+                var fe = efecha.value.split("-");
+                fe = m[fe[1] * 1 - 1] + " " + fe[2] + " de " + fe[0];
+
+                var a = einic.value.split(" ")[0];
+                a = a.split(":")[0] * 1 + a.split(":")[1] * 1;
+                //     var b=eend.value.split(" ")[0];
+                //     b=b.split(":")[0]*1+b.split(":")[1]*1;
+                re = ehoras.value * eprecio.value - edeposito.value;
+                if (re < 0) re = "??????????"
+
+                var t = ehoras.value * eprecio.value;
+                var r = t - edeposito.value
+                etotal.innerHTML = "Total: " + t
+                eresto.innerHTML = "Resto: " + r;
+
+                var ob = getForma(obj,cl);//obj.forma;
+               if(ob!=null){
+              //     alert(JSON.stringify(ob));
+                ob.created = new Date().toString();
+                ob.fecha = fe;
+                ob.nombre = enombre.value;
+                ob.telefono = etelefono.value;
+                ob.direccion = edireccion.value;
+                ob.precio = eprecio.value;
+                ob.horas = ehoras.value;
+                ob.deposito = edeposito.value;
+                ob.inicia = einic.value;
+                ob.termina = eend.value;
+                ob.resto = r;
+                ob.total = t;
+                ob.nota = enota.value;
+                ob.contrato = false;
+                ob.entregada = true;
+                obj.forma = ob;
+                obj.regresadas.push(ob);
+                var q = "";
+                eclip.value = "";
+                if (edeposito.value * 1 === 0) q = "* P E N D I N G *"
+
+                eclip.value = q + "\n" + fe + "\nNombre: " + enombre.value + "\nTelefono: " + etelefono.value +
+                    "\nPrecio: " + eprecio.value + "\nInicia: " + einic.value + "\nDeposito: " + edeposito.value +
+                    "\nTermina: " + eend.value + "\nHoras: " + ehoras.value + "\nTotal: " + t + "\nRestando: " + r + "\nDireccion: " +
+                    edireccion.value + "\nNota: " + enota.value +
+                    "\n\nCreated: " + new Date().toString()
+                //      eclip.select();
+                // document.execCommand("copy");
+
+
+                UpdateJ(link, obj);
+               }
+
+            });
+        } else {
+            if (confirm("Introduce Clave de nuevo\n\nPara alluda habla al: 209 665 8321")) {
+                start();
+                continua = true;
+            } else continua = false;
+
+        }
+
+
+    }
+function getForma(obj,clave){
+         var i=0;
+                     if (obj.pending != undefined) {
+                for (i = 0; i < obj.pending.length; i++) {
+                     if (obj.pending[i].clave === clave) {
+                        //inicia proceso
+                        o = obj.pending[i];
+                        if (o.enviada != undefined) {
+                            if (o.status && !o.regresada) {
+                                if (clave === o.clave) {
+                                   // aprobado=true;
+                                   // continua = true;
+                                  //  eprecio.value = o.precio;
+                                   // efecha.value = o.fecha;
+                                   return o;
+                                }
+                            }
+                        }
+                     }
+                }
+                return undefined;
+         
+         
+         }
+         else return undefined
   
-  }
- 
-    function GetJ(url,callback) {
-            
+}
+    function GetJ(url, callback) {
+
         //var url  = "http://localhost:8080/api/v1/users";
-        var xhr  = new XMLHttpRequest()
-        xhr.open('GET', url+'/1', true)
-        xhr.onload = function () {
-   //         (xhr.responseText)
-          var users = JSON.parse(xhr.responseText);
-          if (xhr.readyState == 4 && xhr.status == "200") {
-          //	console.table(users);
-          callback(users);
-          } else {
-            console.error(users);
-          }
+        var xhr = new XMLHttpRequest()
+        xhr.open('GET', url + '/1', true)
+        xhr.onload = function() {
+            //         (xhr.responseText)
+            var users = JSON.parse(xhr.responseText);
+            if (xhr.readyState == 4 && xhr.status == "200") {
+                //	console.table(users);
+                callback(users);
+            } else {
+                console.error(users);
+            }
         }
         xhr.send(null);
-        }
-        
-      
-// Update a user
-function UpdateJ(url,ob,callback) {//prompt(JSON.stringify(ob))
-    var json = JSON.stringify(ob);//JSON.stringify(data);
-//("this will be sent: \n\n"+otot(ob))
-var xhr = new XMLHttpRequest();
-xhr.open("PUT", url+'/12', true);
-xhr.setRequestHeader('Content-type','application/json; charset=utf-8');
-xhr.onload = function () {
-	var users = JSON.parse(xhr.responseText);
-	if (xhr.readyState == 4 && xhr.status == "200") {
-	 //  (xhr.responseText)
- //   ("Done...\n\nWait a few seconds and press refresh to check changes.")
-//	callback(users);
-	} else {
-		(users);
-	}
-}
-xhr.send(json);
-}  
-  function adjTime(v){
-      
-  //  if(!ecalc.checked){
-          var i=einic.value*1,e=eend.value*1,h=ehoras.value*1,p=eprecio.value*1;
-       if(v==="h"){
-        // var ee=ih+h*1;
-         eend.value=i+h;
-      }
-      if(v==="end"){// alert(eend.value)
-         // var hh=eh-ih;
-          ehoras.value=e-i; 
-
-      }
-      if(v==="in"){ 
-           ehoras.value=e-i; 
-           
-         //  }
-                   setTotal();
     }
-    
-  }
-  function setTotal(v){
-  //                etotal.innerHTML="Total: "+ehoras.value*eprecio.value;
-    //              eresto.innerHTML="Restando: "+ehoras.value*eprecio.value - edeposito.value*eprecio.value;  
-   
-       var t=ehoras.value*eprecio.value;
-      var r=t-edeposito.value
-                 etotal.innerHTML="Total: "+t
-                  eresto.innerHTML="Resto: "+r;         
-              //    alert(eresto.innerHTML)
-                
-  }
- 
-  
+
+
+    // Update a user
+    function UpdateJ(url, ob, callback) { //prompt(JSON.stringify(ob))
+        var json = JSON.stringify(ob); //JSON.stringify(data);
+        //("this will be sent: \n\n"+otot(ob))
+        var xhr = new XMLHttpRequest();
+        xhr.open("PUT", url + '/12', true);
+        xhr.setRequestHeader('Content-type', 'application/json; charset=utf-8');
+        xhr.onload = function() {
+            var users = JSON.parse(xhr.responseText);
+            if (xhr.readyState == 4 && xhr.status == "200") {
+                //  (xhr.responseText)
+                //   ("Done...\n\nWait a few seconds and press refresh to check changes.")
+                //	callback(users);
+            } else {
+                (users);
+            }
+        }
+        xhr.send(json);
+    }
+
+    function adjTime(v) {
+
+        //  if(!ecalc.checked){
+        var i = einic.value * 1,
+            e = eend.value * 1,
+            h = ehoras.value * 1,
+            p = eprecio.value * 1;
+        if (v === "h") {
+            // var ee=ih+h*1;
+            eend.value = i + h;
+        }
+        if (v === "end") { // alert(eend.value)
+            // var hh=eh-ih;
+            ehoras.value = e - i;
+
+        }
+        if (v === "in") {
+            ehoras.value = e - i;
+
+            //  }
+            setTotal();
+        }
+
+    }
+
+    function setTotal(v) {
+        //                etotal.innerHTML="Total: "+ehoras.value*eprecio.value;
+        //              eresto.innerHTML="Restando: "+ehoras.value*eprecio.value - edeposito.value*eprecio.value;  
+
+        var t = ehoras.value * eprecio.value;
+        var r = t - edeposito.value
+        etotal.innerHTML = "Total: " + t
+        eresto.innerHTML = "Resto: " + r;
+        //    alert(eresto.innerHTML)
+
+    }
 </script>
 
-	
+
 </body>
+
 </html>
