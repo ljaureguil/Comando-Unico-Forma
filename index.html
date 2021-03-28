@@ -354,9 +354,11 @@ function getForma(obj,clave){
             if (xhr.readyState == 4 && xhr.status == "200") {
                 //  (xhr.responseText)
                 //   ("Done...\n\nWait a few seconds and press refresh to check changes.")
-                //	callback(users);
+                	callback(users);
+              alert("Tu Forma a sido enviada");
+       
             } else {
-                (users);
+               // (users);
             }
         }
         xhr.send(json);
