@@ -268,8 +268,9 @@
                 ob.total = t;
                 ob.nota = enota.value;
                 ob.contrato = false;
-                ob.entregada = true;
-                obj.forma = ob;
+               
+                ob.regresada = true;
+               // obj.forma = ob;
                 obj.regresadas.push(ob);
                 var q = "";
                 eclip.value = "";
@@ -308,10 +309,7 @@ function getForma(obj,clave){
                         if (o.enviada != undefined) {
                             if (o.status && !o.regresada) {
                                 if (clave === o.clave) {
-                                   // aprobado=true;
-                                   // continua = true;
-                                  //  eprecio.value = o.precio;
-                                   // efecha.value = o.fecha;
+         
                                    return o;
                                 }
                             }
