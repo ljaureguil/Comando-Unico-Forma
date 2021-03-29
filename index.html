@@ -159,7 +159,7 @@
                         //inicia proceso
                         o = obj.pending[i];
                         if (o.enviada != undefined) {
-                            if (o.status && !o.regresada) {
+                            if (o.status) {// && !o.regresada
                                 if (cl === o.clave) {
                                     aprovado=true;
                                      continua = true;
@@ -354,7 +354,7 @@ function getForma(obj,clave){
             if (xhr.readyState == 4 && xhr.status == "200") {
                 //  (xhr.responseText)
                 //   ("Done...\n\nWait a few seconds and press refresh to check changes.")
-                	callback(users);
+                //	callback(users);
               alert("Tu Forma a sido enviada");
        
             } else {
