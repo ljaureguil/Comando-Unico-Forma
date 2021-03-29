@@ -43,6 +43,9 @@
         width:100%;
         height:5%;
     }
+    #deposito{
+        display:none;
+    }
 </style>
 
 <div id="todo">Para alluda habla al:
@@ -67,15 +70,15 @@
 
             <p></p>
             Inicia
-            <input id="inic" type="number" class="centradas" value=5 onchange="adjTime('in')">
+            <input id="inic" type="number" class="centradas"  onchange="adjTime('in')">
+           <p></p>
+           Termina
+            <input id="end" type="number" class="centradas"  oninput="adjTime('end')">
             <p></p>
             Horas
-            <input id="horas" type="number" class="centradas" oninput="adjTime('h')">
+            <input id="horas" type="number" class="centradas" oninput="adjTime('h')"> 
             <p></p>
-            Termina
-            <input id="end" type="number" class="centradas" value=5 oninput="adjTime('end')">
-            <p></p>
-
+ 
             Precio/hora
             <input id="precio" type="number" class="centradas" oninput="setTotal()" readonly=true>
             <p></p>
@@ -159,13 +162,24 @@
                         //inicia proceso
                         o = obj.pending[i];
                         if (o.enviada != undefined) {
-                            if (o.status) {// && !o.regresada
+                            if (o.status) {
                                 if (cl === o.clave) {
                                     aprovado=true;
                                      continua = true;
-                                    eprecio.value = o.precio;
-                                    efecha.value = o.fecha;
-                                } else {
+                                  efecha.value = o.fecha;
+                                      eprecio.value = o.precio*1;
+                                      enombre.value=o.nombre;
+                                      edireccion.value=o.direccion
+                                      etelefono.value=o.telefono;
+                                      einic.value=o.inicia;
+                                      eend.value=o.termina;
+                                      ehoras.value=o.horas;
+                                      
+                                   if(o.nota!=undefined) enota.value = o.nota;
+                                }
+                                
+                                
+                                else {
                                     aprovado=false;
                                     if (confirm("Introduce Clave de nuevo\n\nPara alluda habla al: 209 665 8321")) {
                                        continua = true;
@@ -181,12 +195,13 @@
                 }
                 //si no lo encontro
                 if(i===obj.pending.length) {
-                                              if (confirm("Introduce Clave de nuevo\n\nPara alluda habla al: 209 665 8321")) {
+                                        if (confirm("Introduce Clave de nuevo\n\nPara alluda habla al: 209 665 8321")) {
                                         continua =true;
                                         start();
                                     
                                     } else continua = false;
                 }
+             //   else alert("ok");
  
             }
         });
@@ -230,12 +245,14 @@
 
 
     function setFecha() {
+ //       alert("1");
+        
         if (aprovado) {
-
+// alert("2");
 
             GetJ(link, function(obj) {
-  
 
+ //alert(JSON.stringify(obj));
                 var fe = efecha.value.split("-");
                 fe = m[fe[1] * 1 - 1] + " " + fe[2] + " de " + fe[0];
 
@@ -250,12 +267,13 @@
                 var r = t - edeposito.value
                 etotal.innerHTML = "Total: " + t
                 eresto.innerHTML = "Resto: " + r;
-
+ //alert("3");
                 var ob = getForma(obj,cl);//obj.forma;
+             //   alert(JSON.stringify(ob))
                if(ob!=null){
-              //     alert(JSON.stringify(ob));
+                //   alert("32");
                 ob.created = new Date().toString();
-                ob.fecha = fe;
+                ob.fecha = efecha.value;
                 ob.nombre = enombre.value;
                 ob.telefono = etelefono.value;
                 ob.direccion = edireccion.value;
@@ -268,12 +286,9 @@
                 ob.total = t;
                 ob.nota = enota.value;
                 ob.contrato = false;
-               
-                ob.regresada = true;
-               // obj.forma = ob;
-                obj.regresadas.push(ob);
-                var q = "";
+                 var q = "";
                 eclip.value = "";
+       //         alert("4");
                 if (edeposito.value * 1 === 0) q = "* P E N D I N G *"
 
                 eclip.value = q + "\n" + fe + "\nNombre: " + enombre.value + "\nTelefono: " + etelefono.value +
@@ -283,9 +298,32 @@
                     "\n\nCreated: " + new Date().toString()
                 //      eclip.select();
                 // document.execCommand("copy");
-
-
-                UpdateJ(link, obj);
+//alert("5");
+              if(!ob.regresada){
+             //     alert("6");
+                   ob.regresada = true;
+                   
+                       obj.regresadas.push(ob);
+                   UpdateJ(link, obj);
+                  }
+                  else
+                  {//alert("t");
+                      if(confirm("Forma ya a sido modificada, quieres reescrbirla?")){
+                          var i=0;
+                          for(i=0;i<obj.regresadas.length;i++){
+                              var oo=obj.regresadas[i];
+                              if(oo.clave===cl){
+                                  obj.regresadas[i]=ob;
+                              i=obj.regresadas.length+3;
+                              }
+                              
+                          }
+                          if(i===obj.regresadas.length) alert("La forma no se encuentra, llama al 209 665 8321 por alluda");
+                          UpdateJ(link, obj);
+                          
+                      }
+                      }
+               
                }
 
             });
@@ -299,29 +337,18 @@
 
 
     }
-function getForma(obj,clave){
-         var i=0;
-                     if (obj.pending != undefined) {
-                for (i = 0; i < obj.pending.length; i++) {
-                     if (obj.pending[i].clave === clave) {
-                        //inicia proceso
-                        o = obj.pending[i];
-                        if (o.enviada != undefined) {
-                            if (o.status && !o.regresada) {
-                                if (clave === o.clave) {
-         
-                                   return o;
-                                }
-                            }
-                        }
-                     }
-                }
-                return undefined;
-         
-         
-         }
-         else return undefined
-  
+function getForma(obj, clave) {
+    var i = 0;
+    if (obj.pending != undefined) {
+        for (i = 0; i < obj.pending.length; i++) {
+            o = obj.pending[i];
+            if (o.clave === clave && o.status) {
+                return o;
+            }
+        }
+        return undefined;
+    } else return undefined
+
 }
     function GetJ(url, callback) {
 
@@ -354,11 +381,13 @@ function getForma(obj,clave){
             if (xhr.readyState == 4 && xhr.status == "200") {
                 //  (xhr.responseText)
                 //   ("Done...\n\nWait a few seconds and press refresh to check changes.")
-                //	callback(users);
-              alert("Tu Forma a sido enviada");
-       
+              
+              alert("Tu Forma ha sido Enviada");
+         //         callback(users);
+                
+                
             } else {
-               // (users);
+                (users);
             }
         }
         xhr.send(json);
