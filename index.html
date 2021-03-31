@@ -44,7 +44,7 @@
         height:5%;
     }
     #deposito{
-        display:none;
+      
     }
 </style>
 
@@ -70,21 +70,22 @@
 
             <p></p>
             Inicia
-            <input id="inic" type="number" class="centradas"  onchange="adjTime('in')">
-           <p></p>
-           Termina
-            <input id="end" type="number" class="centradas"  oninput="adjTime('end')">
+            <input id="inic" type="time" class="centradas" value="16:00"  onchange="adjTime('in')">
             <p></p>
             Horas
             <input id="horas" type="number" class="centradas" oninput="adjTime('h')"> 
-            <p></p>
+ 
+
+           <p></p>
+           Termina
+            <input id="end" type="time" class="centradas"   readonly=true>
+           <p></p>
  
             Precio/hora
             <input id="precio" type="number" class="centradas" oninput="setTotal()" readonly=true>
-            <p></p>
-            Deposito
-            <input id="deposito" type="number" class="centradas" value=0 oninput="setTotal(this.value)" readonly=true>
-
+            <p id="deposito"> Deposito</p>
+           
+     
             <p></p>
             <p id="total">Total:</p>
             <p></p>
@@ -149,7 +150,7 @@
     var m = "Jan,Feb,Mar,Apr,May,Ju,Jul,Aug,Sep,Oct,Nov,Dec";
     m = m.split(",");
      var continua = false, o={},aprovado=false, cl="_no_";
-
+   var depo=0;
     start();
  
     function start() {
@@ -166,12 +167,35 @@
                                 if (cl === o.clave) {
                                     aprovado=true;
                                      continua = true;
+                                     if(o.deposito*1>0){
+                                         depo=o.deposito;
+                                         edeposito.innerHTML="Deposito: "+o.deposito;
+                                         
+                                     }
                                   efecha.value = o.fecha;
                                       eprecio.value = o.precio*1;
                                       enombre.value=o.nombre;
                                       edireccion.value=o.direccion
                                       etelefono.value=o.telefono;
+                                  //   alert(o.deposito);
+                                      o.inicia=o.inicia+"";
+                                      if(o.inicia.indexOf(":")<1){
+                                             var ot=o.inicia*1+12;
+                                             o.inicia=ot+"";
+                                          if(o.inicia.length===1) o.inicia="0"+ot+":00";
+                                          else o.inicia=o.inicia+":00"
+                                    //      alert(o.inicia);
+                                      }
                                       einic.value=o.inicia;
+                                      o.termina=o.termina+"";
+                                      if(o.termina.indexOf(":")<1){
+                                          var ot=o.termina*1+12;
+                                          o.termina=ot+"";
+                                          if(o.termina.length===1) o.termina="0"+o.termina+":00";
+                                          else o.termina=o.termina+":00"
+                                     //     alert(o.termina);
+                                      }
+                                                
                                       eend.value=o.termina;
                                       ehoras.value=o.horas;
                                       
@@ -213,11 +237,11 @@
         a = a.split(":")[0] * 1 + a.split(":")[1] * 1;
         //  var b=eend.value.split(" ")[0];
         //  b=b.split(":")[0]*1+b.split(":")[1]*1;
-        var re = ehoras.value * eprecio.value - edeposito.value;
+        var re = ehoras.value * eprecio.value - depo;
         if (re < 0) re = "??????????"
 
         var t = ehoras.value * eprecio.value;
-        var r = t - edeposito.value;
+        var r = t - depo;
         etotal.innerHTML = "Total: " + t
         eresto.innerHTML = "Resto: " + r;
 
@@ -229,11 +253,11 @@
         //  alert(fe);
         eclip.value = ""
         var q = ""
-        if (edeposito.value * 1 === 0) q = "* P E N D I N G *"
+        if (depo * 1 === 0) q = "* P E N D I N G *"
 
 
         eclip.value = q + "\n" + fe + "\n\nNombre: " + enombre.value + "\nTelefono: " + etelefono.value +
-            "\nPrecio: " + eprecio.value + "\nInicia: " + einic.value + "\nDeposito: " + edeposito.value +
+            "\nPrecio: " + eprecio.value + "\nInicia: " + einic.value + "\nDeposito: " + depo +
             "\nTermina: " + eend.value + "\nHoras: " + ehoras.value + "\nTotal: " + t + "\nRestando: " + r + "\nDireccion: " +
             edireccion.value + "\nNota: " + enota.value +
             "\n\nCreated: " + new Date().toString()
@@ -260,11 +284,11 @@
                 a = a.split(":")[0] * 1 + a.split(":")[1] * 1;
                 //     var b=eend.value.split(" ")[0];
                 //     b=b.split(":")[0]*1+b.split(":")[1]*1;
-                re = ehoras.value * eprecio.value - edeposito.value;
+                re = ehoras.value * eprecio.value - depo;
                 if (re < 0) re = "??????????"
 
                 var t = ehoras.value * eprecio.value;
-                var r = t - edeposito.value
+                var r = t - depo
                 etotal.innerHTML = "Total: " + t
                 eresto.innerHTML = "Resto: " + r;
  //alert("3");
@@ -279,7 +303,7 @@
                 ob.direccion = edireccion.value;
                 ob.precio = eprecio.value;
                 ob.horas = ehoras.value;
-                ob.deposito = edeposito.value;
+                ob.deposito = depo;
                 ob.inicia = einic.value;
                 ob.termina = eend.value;
                 ob.resto = r;
@@ -289,10 +313,10 @@
                  var q = "";
                 eclip.value = "";
        //         alert("4");
-                if (edeposito.value * 1 === 0) q = "* P E N D I N G *"
+                if (depo * 1 === 0) q = "* P E N D I N G *"
 
                 eclip.value = q + "\n" + fe + "\nNombre: " + enombre.value + "\nTelefono: " + etelefono.value +
-                    "\nPrecio: " + eprecio.value + "\nInicia: " + einic.value + "\nDeposito: " + edeposito.value +
+                    "\nPrecio: " + eprecio.value + "\nInicia: " + einic.value + "\nDeposito: " + depo +
                     "\nTermina: " + eend.value + "\nHoras: " + ehoras.value + "\nTotal: " + t + "\nRestando: " + r + "\nDireccion: " +
                     edireccion.value + "\nNota: " + enota.value +
                     "\n\nCreated: " + new Date().toString()
@@ -396,25 +420,41 @@ function getForma(obj, clave) {
     function adjTime(v) {
 
         //  if(!ecalc.checked){
-        var i = einic.value * 1,
+        var i = einic.value,
             e = eend.value * 1,
             h = ehoras.value * 1,
             p = eprecio.value * 1;
-        if (v === "h") {
+            iph=i.split(":")[0]*1;
+            ipm=i.split(":")[1];
+            fh=iph*1+h;
+            if(fh>=24) fh=fh-24;
+            fh=fh+"";
+            if( fh.length===1) fh="0"+fh;
+  
+     //       alert(i);
+          //   eend.value = i + h;  
+     //        alert(eend.value)
+            
+ /*       if (v === "h") {
             // var ee=ih+h*1;
             eend.value = i + h;
         }
         if (v === "end") { // alert(eend.value)
             // var hh=eh-ih;
             ehoras.value = e - i;
-
+ 
         }
         if (v === "in") {
             ehoras.value = e - i;
-
+*/
             //  }
-            setTotal();
-        }
+           //      alert(fh+":"+ipm) ;
+                 eend.value=fh+":"+ipm;
+                //       alert(eend.value)  
+                    
+                  
+                  setTotal();
+    //    }
 
     }
 
@@ -423,7 +463,7 @@ function getForma(obj, clave) {
         //              eresto.innerHTML="Restando: "+ehoras.value*eprecio.value - edeposito.value*eprecio.value;  
 
         var t = ehoras.value * eprecio.value;
-        var r = t - edeposito.value
+        var r = t - depo
         etotal.innerHTML = "Total: " + t
         eresto.innerHTML = "Resto: " + r;
         //    alert(eresto.innerHTML)
