@@ -50,7 +50,24 @@
         height:5%;
     }
     #deposito{
-      
+    
+    }
+  #tcontrato{
+      position:absolute;
+    width: 100%;;
+    height: 100%;
+    font-size:9.5px;
+    font-weight:bold;
+    top:0%;
+    left:0%;
+    display:none;
+    padding:15px;
+    font-weight:bold;
+}  
+    #bc{
+        background:red;
+ x;
+        
     }
 </style>
 
@@ -112,16 +129,27 @@
             <br>
             <br>Para alluda habla al:
             <br>209 665 8321
-
-            <textarea id="clip" class="centradas" readonly>===============</textarea>
             <br>
+            <button id="bc" onclick="openContrato()">Abrir Contrato</button>
+ <br><br>
+            <textarea id="clip" class="centradas" readonly>===============</textarea>
+           
     </div>
 
 
 </div>
 
 
+<textarea id="tcontrato" readonly=true ontouch="alert('tocad')"></textarea>
+
+
 <script>
+
+
+
+
+
+
     //<p></p>
     //Auto Off <input id="calc" type="checkbox" >
     //<br>contrato <input id="contrato" type="checkbox" >
@@ -152,7 +180,10 @@
     etelefono = document.getElementById("telefono");
     enota = document.getElementById("nota");
     econtrato = document.getElementById("contrato");
+   etodo = document.getElementById("todo");
+   ebc = document.getElementById("bc");
 
+var r=0;
     var m = "Jan,Feb,Mar,Apr,May,Ju,Jul,Aug,Sep,Oct,Nov,Dec";
     m = m.split(",");
      var continua = false, o={},aprovado=false, cl="_no_";
@@ -247,7 +278,7 @@
         if (re < 0) re = "??????????"
 
         var t = ehoras.value * eprecio.value;
-        var r = t - depo;
+         r = t - depo;
         etotal.innerHTML = "Total: " + t
         eresto.innerHTML = "Resto: " + r;
 
@@ -475,6 +506,72 @@ function getForma(obj, clave) {
         //    alert(eresto.innerHTML)
 
     }
+    
+eco=document.getElementById("tcontrato")
+var linkContrato="https://raw.githubusercontent.com/ljaureguil/Comando-Unico-Inic/main/Contrato.txt"
+
+loadDoc(linkContrato,function(doc){
+  //  alert(doc)
+   eco.value=doc;
+   var p1=doc.split("La persona se");
+   p1=p1[0];
+   p1=p1.split(":");
+   
+   
+})
+ 
+    
+function loadDoc(url,callback) {
+  var xhttp = new XMLHttpRequest();
+  
+  xhttp.open("GET", url, false);
+  xhttp.send();
+callback(xhttp.responseText);
+
+}
+
+function openContrato(){
+        
+        copy();
+          var p1=eco.value.split("La persona se");
+   
+       var p0=p1[0].split("de:");
+       if(edeposito.value===undefined)edeposito.value=0;
+     var p=p0[0]+"de:\n\n";
+   p+="Nombre: "+enombre.value;
+   p+="\nFecha del Evento: " +  efecha.value;
+   p+="\nPrecio por Hora: "+eprecio.value;
+   p+="\nHoras: "+ehoras.value;
+   p+="\nHora de Inicio: "+einic.value;
+   p+="\nHora de Termino: "+eend.value;
+   p+="\nDomicilio del Evento: "+edireccion.value;
+   p+="\nNumero tel/cel: "+etelefono.value;
+   p+="\nDeposito: "+ edeposito.value;
+   p+="\nRestando: "+r;
+   p+="\n\nLa persona se"+p1[1]
+   
+   eco.value=p;
+
+
+    if(eco.style.display==="block"){
+        eco.style.display="none";
+        ebc.innerHTML="Abrir Contrato";
+    }
+    
+    else{
+        
+        eco.style.display="block";
+        ebc.innerHTML="Cerrar Contrato";
+    }
+
+  document.location.href = "#top";
+   
+   
+   
+}
+    
+    
+    
 </script>
 
 
