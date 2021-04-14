@@ -93,7 +93,7 @@
 
             <p></p>
             Inicia
-            <input id="inic" type="time" class="centradas" value="16:00"  onchange="adjTime('in')">
+            <input id="inic" type="time" class="centradas" value="16:00"  oninput="adjTime('in')">
             <p></p>
             Horas
             <input id="horas" type="number" class="centradas" oninput="adjTime('h')"> 
@@ -185,6 +185,8 @@
 
 var r=0;
     var m = "Jan,Feb,Mar,Apr,May,Ju,Jul,Aug,Sep,Oct,Nov,Dec";
+    var dd="Sunday,Monday,Tusday,Wedsnesday,Thursday,Friday,Saturday";
+    dd=dd.split(",");
     m = m.split(",");
      var continua = false, o={},aprovado=false, cl="_no_";
    var depo=0;
@@ -534,16 +536,20 @@ function openContrato(){
         
         copy();
           var p1=eco.value.split("La persona se");
+    var ff=getFecha(efecha.value);
+         
    
        var p0=p1[0].split("de:");
        if(edeposito.value===undefined)edeposito.value=0;
      var p=p0[0]+"de:\n\n";
    p+="Nombre: "+enombre.value;
-   p+="\nFecha del Evento: " +  efecha.value;
+   p+="\nFecha del Evento: " + ff;// efecha.value;
    p+="\nPrecio por Hora: "+eprecio.value;
    p+="\nHoras: "+ehoras.value;
-   p+="\nHora de Inicio: "+einic.value;
-   p+="\nHora de Termino: "+eend.value;
+   p+="\nHora de Inicio: "+getHora(einic.value);
+   
+   
+   p+="\nHora de Termino: "+getHora(eend.value);
    p+="\nDomicilio del Evento: "+edireccion.value;
    p+="\nNumero tel/cel: "+etelefono.value;
    p+="\nDeposito: "+ edeposito.value;
@@ -568,8 +574,28 @@ function openContrato(){
 
   document.location.href = "#top";
    
-   
-   
+}
+function getFecha(fe){
+          var fe=efecha.value.split("-");
+          var nd=new Date();
+           nd.setFullYear(fe[0]*1);
+          nd.setMonth(fe[1]*1);
+          nd.setDate(fe[2]*1);
+          var nf=nd.getDay();
+     return m[fe[1]*1-1]+" "+fe[2]*1+ " "+fe[0]*1+" ("+dd[nf*1-1]+")";
+}
+function getHora(h){
+    h-h*1;
+    if(h.indexOf(":")>=1){
+        var hm=h.split(":");
+        h=hm[0]*1;
+        mi=hm[1];
+        if(h>12){h=h-12;h=h+":"+mi+" PM";}
+        else h=h+":"+mi+" AM";
+        return h
+    }
+    //
+    return h;
 }
     
     
