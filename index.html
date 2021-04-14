@@ -66,8 +66,10 @@
 }  
     #bc{
         background:red;
- x;
         
+    }
+    #cblnk{
+         background:#FF6347;     
     }
 </style>
 
@@ -129,8 +131,9 @@
             <br>
             <br>Para alluda habla al:
             <br>209 665 8321
-            <br>
-            <button id="bc" onclick="openContrato()">Abrir Contrato <br><font style="font-size:10px">***Este Contrato no tiene valides hasta que se haya dado el Deposito***</font></button>
+            <br><button id="cblnk" onclick="openContratoBlank()">Abrir Contrato en Blanco</button>
+            <br><br>
+            <button id="bc" onclick="openContrato()">Abrir me Contrato <br><font style="font-size:10px">***Este Contrato no tiene valides hasta que se haya dado el Deposito***</font></button>
  <br><br>
             <textarea id="clip" class="centradas" readonly>===============</textarea>
            
@@ -145,25 +148,7 @@
 
 <script>
 
-
-
-
-
-
-    //<p></p>
-    //Auto Off <input id="calc" type="checkbox" >
-    //<br>contrato <input id="contrato" type="checkbox" >
-
-    //<input type="date" data-date="" data-date-format="DD MMMM YYYY" value="2015-08-09">
-    //https://jsonblob.com/api/d45d97cc-8cd8-11eb-afbf-45ceb407212d
-</script>
-
-<script>
-    //link="https://jsonblob.com/api/d45d97cc-8cd8-11eb-afbf-45ceb407212d"
-    // de forma=  https://jsonblob.com/47554397-8e50-11eb-81fd-a93d15366c8b
-
     link = "https://jsonblob.com/api/47554397-8e50-11eb-81fd-a93d15366c8b"
-
     //Called after application is started.
     eclip = document.getElementById("clip");
     ecalc = document.getElementById("calc");
@@ -208,6 +193,7 @@ var r=0;
                                      continua = true;
                                      if(o.deposito*1>0){
                                          depo=o.deposito;
+                                         edeposito.value=o.deposito;
                                          edeposito.innerHTML="Deposito: "+o.deposito;
                                          
                                      }
@@ -296,8 +282,9 @@ var r=0;
 
 
         eclip.value = q + "\n" + fe + "\n\nNombre: " + enombre.value + "\nTelefono: " + etelefono.value +
-            "\nPrecio: " + eprecio.value + "\nInicia: " + einic.value + "\nDeposito: " + depo +
-            "\nTermina: " + eend.value + "\nHoras: " + ehoras.value + "\nTotal: " + t + "\nRestando: " + r + "\nDireccion: " +
+            "\nPrecio: " + eprecio.value + 
+            "\nHoras: " +  ehoras.value +"\nInicia: " + getHora(einic.value) +"\nTermina: " + getHora(eend.value) +
+            "\nDeposito: " + depo +"\nTotal: " + t + "\nRestando: " + r + "\nDireccion: " +
             edireccion.value + "\nNota: " + enota.value +
             "\n\nCreated: " + new Date().toString()
 
@@ -469,38 +456,13 @@ function getForma(obj, clave) {
             if(fh>=24) fh=fh-24;
             fh=fh+"";
             if( fh.length===1) fh="0"+fh;
-  
-     //       alert(i);
-          //   eend.value = i + h;  
-     //        alert(eend.value)
-            
- /*       if (v === "h") {
-            // var ee=ih+h*1;
-            eend.value = i + h;
-        }
-        if (v === "end") { // alert(eend.value)
-            // var hh=eh-ih;
-            ehoras.value = e - i;
  
-        }
-        if (v === "in") {
-            ehoras.value = e - i;
-*/
-            //  }
-           //      alert(fh+":"+ipm) ;
                  eend.value=fh+":"+ipm;
-                //       alert(eend.value)  
-                    
-                  
+   
                   setTotal();
-    //    }
-
-    }
+     }
 
     function setTotal(v) {
-        //                etotal.innerHTML="Total: "+ehoras.value*eprecio.value;
-        //              eresto.innerHTML="Restando: "+ehoras.value*eprecio.value - edeposito.value*eprecio.value;  
-
         var t = ehoras.value * eprecio.value;
         var r = t - depo
         etotal.innerHTML = "Total: " + t
@@ -512,16 +474,7 @@ function getForma(obj, clave) {
 eco=document.getElementById("tcontrato")
 var linkContrato="https://raw.githubusercontent.com/ljaureguil/Comando-Unico-Inic/main/Contrato.txt"
 
-loadDoc(linkContrato,function(doc){
-  //  alert(doc)
-   eco.value=doc;
-   var p1=doc.split("La persona se");
-   p1=p1[0];
-   p1=p1.split(":");
-   
-   
-})
- 
+
     
 function loadDoc(url,callback) {
   var xhttp = new XMLHttpRequest();
@@ -531,9 +484,30 @@ function loadDoc(url,callback) {
 callback(xhttp.responseText);
 
 }
+function openContratoBlank(){
+    loadDoc(linkContrato,function(doc){
+        eco.value=doc
+    
+     if(eco.style.display==="block"){
+        eco.style.display="none";
+        ebc.innerHTML="Abrir me Contrato";
 
-function openContrato(){
+    }
+    
+    else{
         
+        eco.style.display="block";
+        ebc.innerHTML="Cerrar Contrato";
+        alert("TAKE A SCREEN SHOT DESPUES DE PRECIONAR 'OK'\n\nEste Contrato no tiene valides hasta que se haya dado el Deposito");
+    }
+
+  document.location.href = "#top";  
+       })
+ 
+ }
+function openContrato(){
+        loadDoc(linkContrato,function(doc){
+            eco.value=doc;
         copy();
           var p1=eco.value.split("La persona se");
     var ff=getFecha(efecha.value);
@@ -561,7 +535,7 @@ function openContrato(){
 
     if(eco.style.display==="block"){
         eco.style.display="none";
-        ebc.innerHTML="Abrir Contrato";
+        ebc.innerHTML="Abrir me Contrato";
 
     }
     
@@ -573,7 +547,7 @@ function openContrato(){
     }
 
   document.location.href = "#top";
-   
+        })  
 }
 function getFecha(fe){
           var fe=efecha.value.split("-");
