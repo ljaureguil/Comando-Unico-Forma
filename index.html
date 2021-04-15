@@ -123,7 +123,7 @@
 
             <br>
             <br>
-            <button id="done" onclick="setFecha()">Enviar forma</button>
+            <button id="done" onclick="setFecha()">Enviar forma</button>F
             <br>
             <br>
 
@@ -535,14 +535,14 @@ function openContrato(){
 
     if(eco.style.display==="block"){
         eco.style.display="none";
-        ebc.innerHTML="Abrir me Contrato";
+        ebc.innerHTML='Abrir mi Contrato <br><font style="font-size:10px">***Este Contrato no tiene valides hasta que se haya dado el Deposito***';
 
     }
     
     else{
         
         eco.style.display="block";
-        ebc.innerHTML="Cerrar Contrato";
+        ebc.innerHTML='Cerrar mi Contrato <br><font style="font-size:10px">***Este Contrato no tiene valides hasta que se haya dado el Deposito***';
         alert("TAKE A SCREEN SHOT DESPUES DE PRECIONAR 'OK'\n\nEste Contrato no tiene valides hasta que se haya dado el Deposito");
     }
 
