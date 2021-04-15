@@ -133,7 +133,7 @@
             <br>209 665 8321
             <br><button id="cblnk" onclick="openContratoBlank()">Abrir Contrato en Blanco</button>
             <br><br>
-            <button id="bc" onclick="openContrato()">Abrir me Contrato <br><font style="font-size:10px">***Este Contrato no tiene valides hasta que se haya dado el Deposito***</font></button>
+            <button id="bc" onclick="openContrato()">Abrir mi Contrato <br><font style="font-size:10px">***Este Contrato no tiene valides hasta que se haya dado el Deposito***</font></button>
  <br><br>
             <textarea id="clip" class="centradas" readonly>===============</textarea>
            
@@ -553,10 +553,12 @@ function getFecha(fe){
           var fe=efecha.value.split("-");
           var nd=new Date();
            nd.setFullYear(fe[0]*1);
-          nd.setMonth(fe[1]*1);
+          nd.setMonth(fe[1]*1-1);// alert(fe[1])
           nd.setDate(fe[2]*1);
           var nf=nd.getDay();
-     return m[fe[1]*1-1]+" "+fe[2]*1+ " "+fe[0]*1+" ("+dd[nf*1-1]+")";
+          
+      //    alert(dd[nf*1]);alert(nf*1+"\n\n"+dd);
+     return m[fe[1]*1-1]+" "+fe[2]*1+ " "+fe[0]*1+" ("+dd[nf*1]+")";
 }
 function getHora(h){
     h-h*1;
