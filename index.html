@@ -123,7 +123,7 @@
 
             <br>
             <br>
-            <button id="done" onclick="setFecha()">Enviar forma</button>F
+            <button id="done" onclick="setFecha()">Enviar forma</button>
             <br>
             <br>
 
@@ -179,8 +179,10 @@ var r=0;
  
     function start() {
         var i=0;
+             cl = prompt("La clave esta en el mismo texto donde esta el link de esta forma:\n\nType Clave: ");
+             if(cl===null || cl===undefined) start();
         GetJ(link, function(obj) {
-            cl = prompt("Type Clave: ");
+ 
             if (obj.pending != undefined) {
                 for (i = 0; i < obj.pending.length; i++) {
                      if (obj.pending[i].clave === cl) {
@@ -240,6 +242,7 @@ var r=0;
                         }
                       i=obj.pending.length+3;
                     }
+                 else start();
                
                 }
                 //si no lo encontro
@@ -295,7 +298,7 @@ var r=0;
 
 
     function setFecha() {
- //       alert("1");
+        alert("ESTA FORMA SOLO ES PARA INFORMACION DE LA AGENDA\n\nDESPUES DE ENVIADA ESTA FORMA SE DARA MAXIMO 2 DIAS PARA EL DEPOSITO Y SERRAR FECHA, DE OTRA FORMA LA PRIORIDAD SE PIERDE Y SE PODIRA DAR LA FECHA A OTRA PERSONA QUE LA REQUIERA.");
         
         if (aprovado) {
 // alert("2");
