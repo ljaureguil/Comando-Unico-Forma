@@ -180,7 +180,9 @@ var r=0;
     function start() {
         var i=0;
              cl = prompt("La clave esta en el mismo texto donde esta el link de esta forma:\n\nType Clave: ");
-             if(cl===null || cl===undefined) start();
+             
+             alert(cl);
+             if(cl===null || cl===undefined) {start();}
         GetJ(link, function(obj) {
  
             if (obj.pending != undefined) {
@@ -190,7 +192,11 @@ var r=0;
                         o = obj.pending[i];
                         if (o.enviada != undefined) {
                             if (o.status) {
+                                
+                           
                                 if (cl === o.clave) {
+                                    
+                                  //  alert("ok")
                                     aprovado=true;
                                      continua = true;
                                      if(o.deposito*1>0){
@@ -231,6 +237,7 @@ var r=0;
                                 
                                 
                                 else {
+                                
                                     aprovado=false;
                                     if (confirm("Introduce Clave de nuevo\n\nPara alluda habla al: 209 665 8321")) {
                                        continua = true;
@@ -242,7 +249,7 @@ var r=0;
                         }
                       i=obj.pending.length+3;
                     }
-                 else start();
+                 //else start();
                
                 }
                 //si no lo encontro
