@@ -179,7 +179,9 @@ var r=0;
  
     function start() {
         var i=0;
-             cl = prompt("La clave esta en el mismo texto donde esta el link de esta forma:\n\nType Clave: ");
+        var nn="\nESTA FORMA SOLO ES PARA INFORMACION DE LA AGENDA\nDESPUES DE HAVER RECIBIDO ESTA FORMA SE DARA MAXIMO 2 DIAS PARA EL DEPOSITO Y SERRAR FECHA, DESPUES DE ESTOS 2 DIAS SE PERDERA LA PRIORIDAD Y PODRIA DARSE A OTRA PERSONA QUE LA REQUIERA."
+             nn+="\n\nPara cualquier duda hable al (209) 665-8321"
+             cl = prompt(nn+"\n\nLa clave esta en el mismo texto donde esta el link de esta forma:\n\nType Clave: ");
              
              alert(cl);
              if(cl===null || cl===undefined) {start();}
@@ -196,7 +198,7 @@ var r=0;
                            
                                 if (cl === o.clave) {
                                     
-                                  //  alert("ok")
+                                    alert("ok")
                                     aprovado=true;
                                      continua = true;
                                      if(o.deposito*1>0){
@@ -237,7 +239,7 @@ var r=0;
                                 
                                 
                                 else {
-                                
+                                    alert("no");
                                     aprovado=false;
                                     if (confirm("Introduce Clave de nuevo\n\nPara alluda habla al: 209 665 8321")) {
                                        continua = true;
@@ -305,7 +307,7 @@ var r=0;
 
 
     function setFecha() {
-        alert("ESTA FORMA SOLO ES PARA INFORMACION DE LA AGENDA\n\nDESPUES DE ENVIADA ESTA FORMA SE DARA MAXIMO 2 DIAS PARA EL DEPOSITO Y SERRAR FECHA, DE OTRA FORMA LA PRIORIDAD SE PIERDE Y SE PODIRA DAR LA FECHA A OTRA PERSONA QUE LA REQUIERA.");
+        alert(nn);
         
         if (aprovado) {
 // alert("2");
