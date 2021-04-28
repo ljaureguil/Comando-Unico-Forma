@@ -147,6 +147,19 @@
 
 
 <script>
+linkt="https://jsonblob.com/api/07c9b963-a78d-11eb-9988-fd1d237d3a97";
+
+var objT={},nu="";
+var lo={}; 
+lo.date=new Date().toString();
+    lo.clave="";
+    lo.claves=[]
+
+    lo.intentos=0;
+    lo.envios=0;
+    lo.editada=0;
+    lo.intentosEnvios=0;
+
 
     link = "https://jsonblob.com/api/47554397-8e50-11eb-81fd-a93d15366c8b"
     //Called after application is started.
@@ -175,13 +188,43 @@ var r=0;
     m = m.split(",");
      var continua = false, o={},aprovado=false, cl="_no_";
    var depo=0;
-    start();
- 
-    function start() {
-        var i=0;
-        var nn="\nESTA FORMA SOLO ES PARA INFORMACION DE LA AGENDA\nDESPUES DE HAVER RECIBIDO ESTA FORMA SE DARA MAXIMO 2 DIAS PARA EL DEPOSITO Y SERRAR FECHA, DESPUES DE ESTOS 2 DIAS SE PERDERA LA PRIORIDAD Y PODRIA DARSE A OTRA PERSONA QUE LA REQUIERA."
+  
+         nn="\nESTA FORMA SOLO ES PARA INFORMACION DE LA AGENDA\nDESPUES DE HAVER RECIBIDO ESTA FORMA SE DARA MAXIMO 2 DIAS PARA EL DEPOSITO Y SERRAR FECHA, DESPUES DE ESTOS 2 DIAS SE PERDERA LA PRIORIDAD Y PODRIA DARSE A OTRA PERSONA QUE LA REQUIERA."
              nn+="\n\nPara cualquier duda hable al (209) 665-8321"
-             cl = prompt(nn+"\n\nLa clave esta en el mismo texto donde esta el link de esta forma:\n\nType Clave: ");
+
+GetJ(linkt,function(obj){
+    objT=obj;
+///CHECAR PARA UDATE ESTO
+     lo.indice=objT.todo.length;
+ 
+ //   alert(JSON.stringify(lo))
+    
+//  localStorage.removeItem('ns');
+  nu=localStorage.getItem("ns");
+//  alert(")))))))))))))))))\n\n"+nu);
+  var strr=JSON.stringify(lo);
+//  alert(strr);
+    if(nu===null){
+        localStorage.setItem("ns",strr);
+ //     nu=localStorage.getItem("ns");
+ // alert(")))))))))))))))))"+nu);    
+    }
+    else lo=JSON.parse(nu);
+  //  ns=localStorage.getItem("ns");    
+ //   alert(lo);
+   start();
+   });
+
+    function start() {
+        lo.intentos++;localStorage.setItem("ns",JSON.stringify(lo))
+     
+        var i=0;
+              cl = prompt(nn+"\n\nLa clave esta en el mismo texto donde esta el link de esta forma:\n\nType Clave: ");
+             lo.claves.push(cl);localStorage.setItem("ns",JSON.stringify(lo))
+      
+              objT.movimientos.push({claveNoVerif:lo.clave,intentosEnvios:lo.intentosEnvios,date:new Date().toString()})
+              UpdateJ(linkt,objT);  
+      //         alert(objT);     
              
              alert(cl);
              if(cl===null || cl===undefined) {start();}
@@ -197,8 +240,15 @@ var r=0;
                                 
                            
                                 if (cl === o.clave) {
+                                    lo.clave=o.clave;
+                                    lo.editada++;
+                                    localStorage.setItem("ns",JSON.stringify(lo))
                                     
-                                  //  alert("ok")
+                                   objT.movimientos.push({clave:lo.clave,ieditadas:lo.editadas,date:new Date().toString()})
+                                   UpdateJ(linkt,objT);  
+                                    
+                                    
+                                 //   alert("ok")
                                     aprovado=true;
                                      continua = true;
                                      if(o.deposito*1>0){
@@ -239,7 +289,7 @@ var r=0;
                                 
                                 
                                 else {
-                                    alert("no");
+                                //    alert("no");
                                     aprovado=false;
                                     if (confirm("Introduce Clave de nuevo\n\nPara alluda habla al: 209 665 8321")) {
                                        continua = true;
@@ -307,12 +357,17 @@ var r=0;
 
 
     function setFecha() {
-        alert(nn);
-        
+      alert(nn);
+      lo.intentosEnvios++;
+      localStorage.setItem("ns",JSON.stringify(lo)) 
+                 objT.movimientos.push({clave:lo.clave,intentosEnvios:lo.intentosEnvios,date:new Date().toString()})
+              UpdateJ(linkt,objT);  
+      
         if (aprovado) {
-// alert("2");
+ //alert("2");
 
             GetJ(link, function(obj) {
+             
 
  //alert(JSON.stringify(obj));
                 var fe = efecha.value.split("-");
@@ -348,6 +403,7 @@ var r=0;
                 ob.total = t;
                 ob.nota = enota.value;
                 ob.contrato = false;
+                ob.obt=lo;
                  var q = "";
                 eclip.value = "";
        //         alert("4");
@@ -362,11 +418,21 @@ var r=0;
                 // document.execCommand("copy");
 //alert("5");
               if(!ob.regresada){
-             //     alert("6");
+             //     alert("6"); 
+             lo.envios++;localStorage.setItem("ns",JSON.stringify(lo));
+             
+             objT.movimientos.push({clave:lo.clave,envios:lo.envios,date:new Date().toString()})
+              UpdateJ(linkt,objT);
                    ob.regresada = true;
                    
+          //         ob.todo=lo;
+                    
                        obj.regresadas.push(ob);
-                   UpdateJ(link, obj);
+                       localStorage.setItem("ns",JSON.stringify(lo));
+             
+                       objT.todo.push(lo);
+                       UpdateJ(linkt,objT);
+                   UpdateJ(link, obj,function(){alert("Tu Forma a sido enviada...")});
                   }
                   else
                   {//alert("t");
@@ -375,13 +441,20 @@ var r=0;
                           for(i=0;i<obj.regresadas.length;i++){
                               var oo=obj.regresadas[i];
                               if(oo.clave===cl){
+                               // ob.todo=lo;
+                               
                                   obj.regresadas[i]=ob;
                               i=obj.regresadas.length+3;
                               }
                               
                           }
                           if(i===obj.regresadas.length) alert("La forma no se encuentra, llama al 209 665 8321 por alluda");
-                          UpdateJ(link, obj);
+                                 
+                                    lo.envios++;
+                                  objT.todo.push(lo);
+                             UpdateJ(linkt,objT);
+                            localStorage.setItem("ns",JSON.stringify(lo));
+                          UpdateJ(link, obj,function(){alert("Tu Forma a sido enviada...")});
                           
                       }
                       }
@@ -418,7 +491,8 @@ function getForma(obj, clave) {
         var xhr = new XMLHttpRequest()
         xhr.open('GET', url + '/1', true)
         xhr.onload = function() {
-            //         (xhr.responseText)
+       //     alert(xhr.responseText)
+            
             var users = JSON.parse(xhr.responseText);
             if (xhr.readyState == 4 && xhr.status == "200") {
                 //	console.table(users);
@@ -444,8 +518,8 @@ function getForma(obj, clave) {
                 //  (xhr.responseText)
                 //   ("Done...\n\nWait a few seconds and press refresh to check changes.")
               
-              alert("Tu Forma ha sido Enviada");
-         //         callback(users);
+           //   alert("Tu Forma ha sido Enviada");
+          if(callback!=undefined)  callback(users);
                 
                 
             } else {
