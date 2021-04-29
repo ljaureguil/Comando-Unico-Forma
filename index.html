@@ -2,7 +2,7 @@
 
 <head>
     <meta name="viewport" content="width=device-width">
-
+    <script src='file:///android_asset/app.js'></script>
 </head>
 <style>
     body {
@@ -10,14 +10,12 @@
         font-size: 25px;
     }
     button {
-          font-size: 25px;
-     border-radius:50px;
-     background:blue;
-     color:white;
-     box-shadow: -20px 20px 20px 2px rgba(0,0,0,.4);
-	    width:95%;
-
-        
+        font-size: 25px;
+        border-radius: 50px;
+        background: blue;
+        color: white;
+        box-shadow: -20px 20px 20px 2px rgba(0, 0, 0, .4);
+        width: 95%;
     }
     #todo {
         // text-align: center;
@@ -42,34 +40,31 @@
     #precio {
         background: #c5c5f5;
     }
-     #fecha {
+    #fecha {
         background: #c5c5f5;
-    }   
-    #nota{
-        width:100%;
-        height:5%;
     }
-    #deposito{
-    
+    #nota {
+        width: 100%;
+        height: 5%;
     }
-  #tcontrato{
-      position:absolute;
-    width: 100%;;
-    height: 100%;
-    font-size:9px;
-    font-weight:bold;
-    top:0%;
-    left:0%;
-    display:none;
-    padding:15px;
-    font-weight:bold;
-}  
-    #bc{
-        background:red;
-        
+    #deposito {} #tcontrato {
+        position: absolute;
+        width: 100%;
+        ;
+        height: 100%;
+        font-size: 9px;
+        font-weight: bold;
+        top: 0%;
+        left: 0%;
+        display: none;
+        padding: 15px;
+        font-weight: bold;
     }
-    #cblnk{
-         background:#FF6347;     
+    #bc {
+        background: red;
+    }
+    #cblnk {
+        background: #FF6347;
     }
 </style>
 
@@ -95,22 +90,22 @@
 
             <p></p>
             Inicia
-            <input id="inic" type="time" class="centradas" value="16:00"  oninput="adjTime('in')">
+            <input id="inic" type="time" class="centradas" value="16:00" oninput="adjTime('in')">
             <p></p>
             Horas
-            <input id="horas" type="number" class="centradas" oninput="adjTime('h')"> 
- 
+            <input id="horas" type="number" class="centradas" oninput="adjTime('h')">
 
-           <p></p>
-           Termina
-            <input id="end" type="time" class="centradas"   readonly=true>
-           <p></p>
- 
+
+            <p></p>
+            Termina
+            <input id="end" type="time" class="centradas" readonly=true>
+            <p></p>
+
             Precio/hora
             <input id="precio" type="number" class="centradas" oninput="setTotal()" readonly=true>
-            <p id="deposito"> Deposito</p>
-           
-     
+            <p id="deposito">Deposito</p>
+
+
             <p></p>
             <p id="total">Total:</p>
             <p></p>
@@ -131,34 +126,40 @@
             <br>
             <br>Para alluda habla al:
             <br>209 665 8321
-            <br><button id="cblnk" onclick="openContratoBlank()">Abrir Contrato en Blanco</button>
-            <br><br>
-            <button id="bc" onclick="openContrato()">Abrir mi Contrato <br><font style="font-size:10px">***Este Contrato no tiene valides hasta que se haya dado el Deposito***</font></button>
- <br><br>
+            <br>
+            <button id="cblnk" onclick="openContratoBlank()">Abrir Contrato en Blanco</button>
+            <br>
+            <br>
+            <button id="bc" onclick="openContrato()">Abrir mi Contrato
+                <br><font style="font-size:10px">***Este Contrato no tiene valides hasta que se haya dado el Deposito***</font>
+            </button>
+            <br>
+            <br>
             <textarea id="clip" class="centradas" readonly>===============</textarea>
-           
+
     </div>
 
 
 </div>
 
 
-<textarea id="tcontrato" readonly=true ></textarea>
+<textarea id="tcontrato" readonly=true></textarea>
 
 
 <script>
-linkt="https://jsonblob.com/api/07c9b963-a78d-11eb-9988-fd1d237d3a97";
+    linkt = "https://jsonblob.com/api/07c9b963-a78d-11eb-9988-fd1d237d3a97";
 
-var objT={},nu="";
-var lo={}; 
-lo.date=new Date().toString();
-    lo.clave="";
-    lo.claves=[]
+    var objT = {}, nu = "";
+    var lo = {};
+    lo.id="";
+    lo.date = new Date().toString();
+    lo.clave = "";
+    lo.claves = []
 
-    lo.intentos=0;
-    lo.envios=0;
-    lo.editada=0;
-    lo.intentosEnvios=0;
+    lo.intentos = [];
+    lo.envios = [];
+    lo.editada = [];
+    lo.intentosEnvios = [];
 
 
     link = "https://jsonblob.com/api/47554397-8e50-11eb-81fd-a93d15366c8b"
@@ -178,142 +179,160 @@ lo.date=new Date().toString();
     etelefono = document.getElementById("telefono");
     enota = document.getElementById("nota");
     econtrato = document.getElementById("contrato");
-   etodo = document.getElementById("todo");
-   ebc = document.getElementById("bc");
+    etodo = document.getElementById("todo");
+    ebc = document.getElementById("bc");
 
-var r=0;
+    var r = 0;
     var m = "Jan,Feb,Mar,Apr,May,Ju,Jul,Aug,Sep,Oct,Nov,Dec";
-    var dd="Sunday,Monday,Tusday,Wedsnesday,Thursday,Friday,Saturday";
-    dd=dd.split(",");
+    var dd = "Sunday,Monday,Tusday,Wedsnesday,Thursday,Friday,Saturday";
+    dd = dd.split(",");
     m = m.split(",");
-     var continua = false, o={},aprovado=false, cl="_no_";
-   var depo=0;
-  
-         nn="\nESTA FORMA SOLO ES PARA INFORMACION DE LA AGENDA\nDESPUES DE HAVER RECIBIDO ESTA FORMA SE DARA MAXIMO 2 DIAS PARA EL DEPOSITO Y SERRAR FECHA, DESPUES DE ESTOS 2 DIAS SE PERDERA LA PRIORIDAD Y PODRIA DARSE A OTRA PERSONA QUE LA REQUIERA."
-             nn+="\n\nPara cualquier duda hable al (209) 665-8321"
+    var continua = false,
+        o = {}, aprovado = false,
+        cl = "_no_";
+    var depo = 0;
 
-GetJ(linkt,function(obj){
-    objT=obj;
-///CHECAR PARA UDATE ESTO
-     lo.indice=objT.todo.length;
- 
- //   alert(JSON.stringify(lo))
-    
-//  localStorage.removeItem('ns');
-  nu=localStorage.getItem("ns");
-//  alert(")))))))))))))))))\n\n"+nu);
-  var strr=JSON.stringify(lo);
-//  alert(strr);
-    if(nu===null){
-        localStorage.setItem("ns",strr);
- //     nu=localStorage.getItem("ns");
- // alert(")))))))))))))))))"+nu);    
+
+    nn = "\nESTA FORMA SOLO ES PARA INFORMACION DE LA AGENDA\nDESPUES DE HAVER RECIBIDO ESTA FORMA SE DARA MAXIMO 2 DIAS PARA EL DEPOSITO Y SERRAR FECHA, DESPUES DE ESTOS 2 DIAS SE PERDERA LA PRIORIDAD Y PODRIA DARSE A OTRA PERSONA QUE LA REQUIERA."
+    nn += "\n\nPara cualquier duda hable al (209) 665-8321"
+
+    GetJ(linkt, function(obj) {
+        objT = obj;
+ //       localStorage.removeItem('ns');
+        nu = localStorage.getItem("ns");
+        //  alert(")))))))))))))))))\n\n"+nu);
+        if (nu === null) {
+            lo.id = new Date().toString();
+            localStorage.setItem("ns", lo.id);
+            obj.movimientos.push(lo);
+            lo.indice = obj.movimientos.length - 1;
+            UpdateJ(linkt, objT);
+        } else {
+            var v = getMove(nu, objT);
+            if (v === null) {
+                lo.id = nu; 
+                obj.movimientos.push(lo);
+                lo.indice = obj.movimientos.length - 1;
+                UpdateJ(linkt, objT);
+            } else {
+                lo = v;
+           
+
+            }
+
+        }
+
+
+        start();
+
+    });
+
+    function getMove(id, ob) {
+        for (var i = 0; i < ob.movimientos.length; i++) {
+            var mo = ob.movimientos[i];
+            if (mo.id === id) {
+                mo.indice = i;
+                return mo;
+            }
+        }
+            alert(lo.id);
+        return null
+
     }
-    else lo=JSON.parse(nu);
-  //  ns=localStorage.getItem("ns");    
- //   alert(lo);
-   start();
-   });
 
     function start() {
-        lo.intentos++;localStorage.setItem("ns",JSON.stringify(lo))
-     
-        var i=0;
-              cl = prompt(nn+"\n\nLa clave esta en el mismo texto donde esta el link de esta forma:\n\nType Clave: ");
-             lo.claves.push(cl);localStorage.setItem("ns",JSON.stringify(lo))
-      
-              objT.movimientos.push({claveNoVerif:lo.clave,intentosEnvios:lo.intentosEnvios,date:new Date().toString()})
-              UpdateJ(linkt,objT);  
-      //         alert(objT);     
-             
-             alert(cl);
-             if(cl===null || cl===undefined) {start();}
+
+
+        var i = 0;
+        cl = prompt(nn + "\n\nLa clave esta en el mismo texto donde esta el link de esta forma:\n\nType Clave: ");
+        lo.claves.push(cl);
+
+        lo.intentos.push(new Date().toString());
+        objT.movimientos[lo.indice] = lo
+        UpdateJ(linkt, objT);
+        alert(cl);
+        if (cl === null || cl === undefined) {
+            start();
+        }
         GetJ(link, function(obj) {
- 
+
             if (obj.pending != undefined) {
                 for (i = 0; i < obj.pending.length; i++) {
-                     if (obj.pending[i].clave === cl) {
+                    if (obj.pending[i].clave === cl) {
                         //inicia proceso
                         o = obj.pending[i];
                         if (o.enviada != undefined) {
                             if (o.status) {
-                                
-                           
+
+
                                 if (cl === o.clave) {
-                                    lo.clave=o.clave;
-                                    lo.editada++;
-                                    localStorage.setItem("ns",JSON.stringify(lo))
-                                    
-                                   objT.movimientos.push({clave:lo.clave,ieditadas:lo.editadas,date:new Date().toString()})
-                                   UpdateJ(linkt,objT);  
-                                    
-                                    
-                                 //   alert("ok")
-                                    aprovado=true;
-                                     continua = true;
-                                     if(o.deposito*1>0){
-                                         depo=o.deposito;
-                                         edeposito.value=o.deposito;
-                                         edeposito.innerHTML="Deposito: "+o.deposito;
-                                         
-                                     }
-                                  efecha.value = o.fecha;
-                                      eprecio.value = o.precio*1;
-                                      enombre.value=o.nombre;
-                                      edireccion.value=o.direccion
-                                      etelefono.value=o.telefono;
-                                  //   alert(o.deposito);
-                                      o.inicia=o.inicia+"";
-                                      if(o.inicia.indexOf(":")<1){
-                                             var ot=o.inicia*1+12;
-                                             o.inicia=ot+"";
-                                          if(o.inicia.length===1) o.inicia="0"+ot+":00";
-                                          else o.inicia=o.inicia+":00"
-                                    //      alert(o.inicia);
-                                      }
-                                      einic.value=o.inicia;
-                                      o.termina=o.termina+"";
-                                      if(o.termina.indexOf(":")<1){
-                                          var ot=o.termina*1+12;
-                                          o.termina=ot+"";
-                                          if(o.termina.length===1) o.termina="0"+o.termina+":00";
-                                          else o.termina=o.termina+":00"
-                                     //     alert(o.termina);
-                                      }
-                                                
-                                      eend.value=o.termina;
-                                      ehoras.value=o.horas;
-                                      
-                                   if(o.nota!=undefined) enota.value = o.nota;
-                                }
-                                
-                                
-                                else {
-                                //    alert("no");
-                                    aprovado=false;
+                                    lo.clave = o.clave;
+                                    lo.editada.push(new Date().toString());
+                                    objT.movimientos[lo.indice] = lo
+                                    UpdateJ(linkt, objT);
+
+                                    aprovado = true;
+                                    continua = true;
+                                    if (o.deposito * 1 > 0) {
+                                        depo = o.deposito;
+                                        edeposito.value = o.deposito;
+                                        edeposito.innerHTML = "Deposito: " + o.deposito;
+
+                                    }
+                                    efecha.value = o.fecha;
+                                    eprecio.value = o.precio * 1;
+                                    enombre.value = o.nombre;
+                                    edireccion.value = o.direccion
+                                    etelefono.value = o.telefono;
+                                    //   alert(o.deposito);
+                                    o.inicia = o.inicia + "";
+                                    if (o.inicia.indexOf(":") < 1) {
+                                        var ot = o.inicia * 1 + 12;
+                                        o.inicia = ot + "";
+                                        if (o.inicia.length === 1) o.inicia = "0" + ot + ":00";
+                                        else o.inicia = o.inicia + ":00"
+                                        //      alert(o.inicia);
+                                    }
+                                    einic.value = o.inicia;
+                                    o.termina = o.termina + "";
+                                    if (o.termina.indexOf(":") < 1) {
+                                        var ot = o.termina * 1 + 12;
+                                        o.termina = ot + "";
+                                        if (o.termina.length === 1) o.termina = "0" + o.termina + ":00";
+                                        else o.termina = o.termina + ":00"
+                                        //     alert(o.termina);
+                                    }
+
+                                    eend.value = o.termina;
+                                    ehoras.value = o.horas;
+
+                                    if (o.nota != undefined) enota.value = o.nota;
+                                } else {
+                                    //    alert("no");
+                                    aprovado = false;
                                     if (confirm("Introduce Clave de nuevo\n\nPara alluda habla al: 209 665 8321")) {
-                                       continua = true;
+                                        continua = true;
                                         start();
-                           
+
                                     } else continua = false;
                                 }
                             } else alert("La forma ya a sido enviada o no esta activa, para preguntas llama al 209 665 8321")
                         }
-                      i=obj.pending.length+3;
+                        i = obj.pending.length + 3;
                     }
-                 //else start();
-               
+                    //else start();
+
                 }
                 //si no lo encontro
-                if(i===obj.pending.length) {
-                                        if (confirm("Introduce Clave de nuevo\n\nPara alluda habla al: 209 665 8321")) {
-                                        continua =true;
-                                        start();
-                                    
-                                    } else continua = false;
+                if (i === obj.pending.length) {
+                    if (confirm("Introduce Clave de nuevo\n\nPara alluda habla al: 209 665 8321")) {
+                        continua = true;
+                        start();
+
+                    } else continua = false;
                 }
-             //   else alert("ok");
- 
+                //   else alert("ok");
+
             }
         });
     }
@@ -328,7 +347,7 @@ GetJ(linkt,function(obj){
         if (re < 0) re = "??????????"
 
         var t = ehoras.value * eprecio.value;
-         r = t - depo;
+        r = t - depo;
         etotal.innerHTML = "Total: " + t
         eresto.innerHTML = "Resto: " + r;
 
@@ -344,9 +363,9 @@ GetJ(linkt,function(obj){
 
 
         eclip.value = q + "\n" + fe + "\n\nNombre: " + enombre.value + "\nTelefono: " + etelefono.value +
-            "\nPrecio: " + eprecio.value + 
-            "\nHoras: " +  ehoras.value +"\nInicia: " + getHora(einic.value) +"\nTermina: " + getHora(eend.value) +
-            "\nDeposito: " + depo +"\nTotal: " + t + "\nRestando: " + r + "\nDireccion: " +
+            "\nPrecio: " + eprecio.value +
+            "\nHoras: " + ehoras.value + "\nInicia: " + getHora(einic.value) + "\nTermina: " + getHora(eend.value) +
+            "\nDeposito: " + depo + "\nTotal: " + t + "\nRestando: " + r + "\nDireccion: " +
             edireccion.value + "\nNota: " + enota.value +
             "\n\nCreated: " + new Date().toString()
 
@@ -357,19 +376,17 @@ GetJ(linkt,function(obj){
 
 
     function setFecha() {
-      alert(nn);
-      lo.intentosEnvios++;
-      localStorage.setItem("ns",JSON.stringify(lo)) 
-                 objT.movimientos.push({clave:lo.clave,intentosEnvios:lo.intentosEnvios,date:new Date().toString()})
-              UpdateJ(linkt,objT);  
-      
+        alert(nn);
+        lo.intentosEnvios.push(new Date().toString());
+        objT.movimientos[lo.indice] = lo
+        UpdateJ(linkt, objT);
         if (aprovado) {
- //alert("2");
+            //alert("2");
 
             GetJ(link, function(obj) {
-             
 
- //alert(JSON.stringify(obj));
+
+                //alert(JSON.stringify(obj));
                 var fe = efecha.value.split("-");
                 fe = m[fe[1] * 1 - 1] + " " + fe[2] + " de " + fe[0];
 
@@ -384,82 +401,76 @@ GetJ(linkt,function(obj){
                 var r = t - depo
                 etotal.innerHTML = "Total: " + t
                 eresto.innerHTML = "Resto: " + r;
- //alert("3");
-                var ob = getForma(obj,cl);//obj.forma;
-             //   alert(JSON.stringify(ob))
-               if(ob!=null){
-                //   alert("32");
-                ob.created = new Date().toString();
-                ob.fecha = efecha.value;
-                ob.nombre = enombre.value;
-                ob.telefono = etelefono.value;
-                ob.direccion = edireccion.value;
-                ob.precio = eprecio.value;
-                ob.horas = ehoras.value;
-                ob.deposito = depo;
-                ob.inicia = einic.value;
-                ob.termina = eend.value;
-                ob.resto = r;
-                ob.total = t;
-                ob.nota = enota.value;
-                ob.contrato = false;
-                ob.obt=lo;
-                 var q = "";
-                eclip.value = "";
-       //         alert("4");
-                if (depo * 1 === 0) q = "* P E N D I N G *"
+                //alert("3");
+                var ob = getForma(obj, cl); //obj.forma;
+                //   alert(JSON.stringify(ob))
+                if (ob != null) {
+                    //   alert("32");
+                    ob.created = new Date().toString();
+                    ob.fecha = efecha.value;
+                    ob.nombre = enombre.value;
+                    ob.telefono = etelefono.value;
+                    ob.direccion = edireccion.value;
+                    ob.precio = eprecio.value;
+                    ob.horas = ehoras.value;
+                    ob.deposito = depo;
+                    ob.inicia = einic.value;
+                    ob.termina = eend.value;
+                    ob.resto = r;
+                    ob.total = t;
+                    ob.nota = enota.value;
+                    ob.contrato = false;
+                    ob.obt = lo;
+                    var q = "";
+                    eclip.value = "";
+                    //         alert("4");
+                    if (depo * 1 === 0) q = "* P E N D I N G *"
 
-                eclip.value = q + "\n" + fe + "\nNombre: " + enombre.value + "\nTelefono: " + etelefono.value +
-                    "\nPrecio: " + eprecio.value + "\nInicia: " + einic.value + "\nDeposito: " + depo +
-                    "\nTermina: " + eend.value + "\nHoras: " + ehoras.value + "\nTotal: " + t + "\nRestando: " + r + "\nDireccion: " +
-                    edireccion.value + "\nNota: " + enota.value +
-                    "\n\nCreated: " + new Date().toString()
-                //      eclip.select();
-                // document.execCommand("copy");
-//alert("5");
-              if(!ob.regresada){
-             //     alert("6"); 
-             lo.envios++;localStorage.setItem("ns",JSON.stringify(lo));
-             
-             objT.movimientos.push({clave:lo.clave,envios:lo.envios,date:new Date().toString()})
-              UpdateJ(linkt,objT);
-                   ob.regresada = true;
-                   
-          //         ob.todo=lo;
-                    
-                       obj.regresadas.push(ob);
-                       localStorage.setItem("ns",JSON.stringify(lo));
-             
-                       objT.todo.push(lo);
-                       UpdateJ(linkt,objT);
-                   UpdateJ(link, obj,function(){alert("Tu Forma a sido enviada...")});
-                  }
-                  else
-                  {//alert("t");
-                      if(confirm("Forma ya a sido modificada, quieres reescrbirla?")){
-                          var i=0;
-                          for(i=0;i<obj.regresadas.length;i++){
-                              var oo=obj.regresadas[i];
-                              if(oo.clave===cl){
-                               // ob.todo=lo;
-                               
-                                  obj.regresadas[i]=ob;
-                              i=obj.regresadas.length+3;
-                              }
-                              
-                          }
-                          if(i===obj.regresadas.length) alert("La forma no se encuentra, llama al 209 665 8321 por alluda");
-                                 
-                                    lo.envios++;
-                                  objT.todo.push(lo);
-                             UpdateJ(linkt,objT);
-                            localStorage.setItem("ns",JSON.stringify(lo));
-                          UpdateJ(link, obj,function(){alert("Tu Forma a sido enviada...")});
-                          
-                      }
-                      }
-               
-               }
+                    eclip.value = q + "\n" + fe + "\nNombre: " + enombre.value + "\nTelefono: " + etelefono.value +
+                        "\nPrecio: " + eprecio.value + "\nInicia: " + einic.value + "\nDeposito: " + depo +
+                        "\nTermina: " + eend.value + "\nHoras: " + ehoras.value + "\nTotal: " + t + "\nRestando: " + r + "\nDireccion: " +
+                        edireccion.value + "\nNota: " + enota.value +
+                        "\n\nCreated: " + new Date().toString()
+                    //      eclip.select();
+                    // document.execCommand("copy");
+                    //alert("5");
+                    if (!ob.regresada) {
+                        //     alert("6"); 
+                        lo.envios.push(new Date().toString());
+                        objT.movimientos[lo.indice] = lo
+                        UpdateJ(linkt, objT);
+                        ob.regresada = true;
+                        obj.regresadas.push(ob);
+
+                        UpdateJ(link, obj, function() {
+                            alert("Tu Forma a sido enviada...")
+                        });
+                    } else { //alert("t");
+                        if (confirm("Forma ya a sido modificada, quieres reescrbirla?")) {
+                            var i = 0;
+                            for (i = 0; i < obj.regresadas.length; i++) {
+                                var oo = obj.regresadas[i];
+                                if (oo.clave === cl) {
+                                    // ob.todo=lo;
+
+                                    obj.regresadas[i] = ob;
+                                    i = obj.regresadas.length + 3;
+                                }
+
+                            }
+                            if (i === obj.regresadas.length) alert("La forma no se encuentra, llama al 209 665 8321 por alluda");
+
+                            lo.envios.push(new Date().toString());
+                            objT.movimientos[lo.indice] = lo
+                            UpdateJ(linkt, objT);
+                            UpdateJ(link, obj, function() {
+                                alert("Tu Forma a sido enviada...")
+                            });
+
+                        }
+                    }
+
+                }
 
             });
         } else {
@@ -472,27 +483,29 @@ GetJ(linkt,function(obj){
 
 
     }
-function getForma(obj, clave) {
-    var i = 0;
-    if (obj.pending != undefined) {
-        for (i = 0; i < obj.pending.length; i++) {
-            o = obj.pending[i];
-            if (o.clave === clave && o.status) {
-                return o;
-            }
-        }
-        return undefined;
-    } else return undefined
 
-}
+    function getForma(obj, clave) {
+        var i = 0;
+        if (obj.pending != undefined) {
+            for (i = 0; i < obj.pending.length; i++) {
+                o = obj.pending[i];
+                if (o.clave === clave && o.status) {
+                    return o;
+                }
+            }
+            return undefined;
+        } else return undefined
+
+    }
+
     function GetJ(url, callback) {
 
         //var url  = "http://localhost:8080/api/v1/users";
         var xhr = new XMLHttpRequest()
         xhr.open('GET', url + '/1', true)
         xhr.onload = function() {
-       //     alert(xhr.responseText)
-            
+            //     alert(xhr.responseText)
+
             var users = JSON.parse(xhr.responseText);
             if (xhr.readyState == 4 && xhr.status == "200") {
                 //	console.table(users);
@@ -517,11 +530,11 @@ function getForma(obj, clave) {
             if (xhr.readyState == 4 && xhr.status == "200") {
                 //  (xhr.responseText)
                 //   ("Done...\n\nWait a few seconds and press refresh to check changes.")
-              
-           //   alert("Tu Forma ha sido Enviada");
-          if(callback!=undefined)  callback(users);
-                
-                
+
+                //   alert("Tu Forma ha sido Enviada");
+                if (callback != undefined) callback(users);
+
+
             } else {
                 (users);
             }
@@ -536,17 +549,17 @@ function getForma(obj, clave) {
             e = eend.value * 1,
             h = ehoras.value * 1,
             p = eprecio.value * 1;
-            iph=i.split(":")[0]*1;
-            ipm=i.split(":")[1];
-            fh=iph*1+h;
-            if(fh>=24) fh=fh-24;
-            fh=fh+"";
-            if( fh.length===1) fh="0"+fh;
- 
-                 eend.value=fh+":"+ipm;
-   
-                  setTotal();
-     }
+        iph = i.split(":")[0] * 1;
+        ipm = i.split(":")[1];
+        fh = iph * 1 + h;
+        if (fh >= 24) fh = fh - 24;
+        fh = fh + "";
+        if (fh.length === 1) fh = "0" + fh;
+
+        eend.value = fh + ":" + ipm;
+
+        setTotal();
+    }
 
     function setTotal(v) {
         var t = ehoras.value * eprecio.value;
@@ -556,112 +569,123 @@ function getForma(obj, clave) {
         //    alert(eresto.innerHTML)
 
     }
+
+    eco = document.getElementById("tcontrato")
+    var linkContrato = "https://raw.githubusercontent.com/ljaureguil/Comando-Unico-Inic/main/Contrato.txt"
+
+
+
+        function loadDoc(url, callback) {
+            var xhttp = new XMLHttpRequest();
+
+            xhttp.open("GET", url, false);
+            xhttp.send();
+            callback(xhttp.responseText);
+
+        }
+
+        function openContratoBlank() {
+            loadDoc(linkContrato, function(doc) {
+                eco.value = doc
+
+                if (eco.style.display === "block") {
+                    eco.style.display = "none";
+                    ebc.innerHTML = "Abrir me Contrato";
+
+                } else {
+
+                    eco.style.display = "block";
+                    ebc.innerHTML = "Cerrar Contrato";
+                    alert("TAKE A SCREEN SHOT DESPUES DE PRECIONAR 'OK'\n\nEste Contrato no tiene valides hasta que se haya dado el Deposito");
+                }
+
+                document.location.href = "#top";
+            })
+
+        }
+
+        function openContrato() {
+            loadDoc(linkContrato, function(doc) {
+                eco.value = doc;
+                copy();
+                var p1 = eco.value.split("La persona se");
+                var ff = getFecha(efecha.value);
+
+
+                var p0 = p1[0].split("de:");
+                if (edeposito.value === undefined) edeposito.value = 0;
+                var p = p0[0] + "de:\n\n";
+                p += "Nombre: " + enombre.value;
+                p += "\nFecha del Evento: " + ff; // efecha.value;
+                p += "\nPrecio por Hora: " + eprecio.value;
+                p += "\nHoras: " + ehoras.value;
+                p += "\nHora de Inicio: " + getHora(einic.value);
+
+
+                p += "\nHora de Termino: " + getHora(eend.value);
+                p += "\nDomicilio del Evento: " + edireccion.value;
+                p += "\nNumero tel/cel: " + etelefono.value;
+                p += "\nDeposito: " + edeposito.value;
+                p += "\nRestando: " + r;
+                p += "\n\nLa persona se" + p1[1]
+
+                eco.value = p;
+
+
+                if (eco.style.display === "block") {
+                    eco.style.display = "none";
+                    ebc.innerHTML = 'Abrir mi Contrato <br><font style="font-size:10px">***Este Contrato no tiene valides hasta que se haya dado el Deposito***';
+
+                } else {
+
+                    eco.style.display = "block";
+                    ebc.innerHTML = 'Cerrar mi Contrato <br><font style="font-size:10px">***Este Contrato no tiene valides hasta que se haya dado el Deposito***';
+                    alert("TAKE A SCREEN SHOT DESPUES DE PRECIONAR 'OK'\n\nEste Contrato no tiene valides hasta que se haya dado el Deposito");
+                }
+
+                document.location.href = "#top";
+            })
+        }
+
+        function getFecha(fe) {
+            var fe = efecha.value.split("-");
+            var nd = new Date();
+            nd.setFullYear(fe[0] * 1);
+            nd.setMonth(fe[1] * 1 - 1); // alert(fe[1])
+            nd.setDate(fe[2] * 1);
+            var nf = nd.getDay();
+
+            //    alert(dd[nf*1]);alert(nf*1+"\n\n"+dd);
+            return m[fe[1] * 1 - 1] + " " + fe[2] * 1 + " " + fe[0] * 1 + " (" + dd[nf * 1] + ")";
+        }
+
+        function getHora(h) {
+            h - h * 1;
+            if (h.indexOf(":") >= 1) {
+                var hm = h.split(":");
+                h = hm[0] * 1;
+                mi = hm[1];
+                if (h > 12) {
+                    h = h - 12;
+                    h = h + ":" + mi + " PM";
+                } else h = h + ":" + mi + " AM";
+                return h
+            }
+            //
+            return h;
+        }
+
+        /*
+ {
+  "main": {},
+  "movimientos": [],
+  "todo": []
+}   
     
-eco=document.getElementById("tcontrato")
-var linkContrato="https://raw.githubusercontent.com/ljaureguil/Comando-Unico-Inic/main/Contrato.txt"
-
-
-    
-function loadDoc(url,callback) {
-  var xhttp = new XMLHttpRequest();
-  
-  xhttp.open("GET", url, false);
-  xhttp.send();
-callback(xhttp.responseText);
-
-}
-function openContratoBlank(){
-    loadDoc(linkContrato,function(doc){
-        eco.value=doc
-    
-     if(eco.style.display==="block"){
-        eco.style.display="none";
-        ebc.innerHTML="Abrir me Contrato";
-
-    }
-    
-    else{
-        
-        eco.style.display="block";
-        ebc.innerHTML="Cerrar Contrato";
-        alert("TAKE A SCREEN SHOT DESPUES DE PRECIONAR 'OK'\n\nEste Contrato no tiene valides hasta que se haya dado el Deposito");
-    }
-
-  document.location.href = "#top";  
-       })
- 
- }
-function openContrato(){
-        loadDoc(linkContrato,function(doc){
-            eco.value=doc;
-        copy();
-          var p1=eco.value.split("La persona se");
-    var ff=getFecha(efecha.value);
-         
-   
-       var p0=p1[0].split("de:");
-       if(edeposito.value===undefined)edeposito.value=0;
-     var p=p0[0]+"de:\n\n";
-   p+="Nombre: "+enombre.value;
-   p+="\nFecha del Evento: " + ff;// efecha.value;
-   p+="\nPrecio por Hora: "+eprecio.value;
-   p+="\nHoras: "+ehoras.value;
-   p+="\nHora de Inicio: "+getHora(einic.value);
-   
-   
-   p+="\nHora de Termino: "+getHora(eend.value);
-   p+="\nDomicilio del Evento: "+edireccion.value;
-   p+="\nNumero tel/cel: "+etelefono.value;
-   p+="\nDeposito: "+ edeposito.value;
-   p+="\nRestando: "+r;
-   p+="\n\nLa persona se"+p1[1]
-   
-   eco.value=p;
-
-
-    if(eco.style.display==="block"){
-        eco.style.display="none";
-        ebc.innerHTML='Abrir mi Contrato <br><font style="font-size:10px">***Este Contrato no tiene valides hasta que se haya dado el Deposito***';
-
-    }
-    
-    else{
-        
-        eco.style.display="block";
-        ebc.innerHTML='Cerrar mi Contrato <br><font style="font-size:10px">***Este Contrato no tiene valides hasta que se haya dado el Deposito***';
-        alert("TAKE A SCREEN SHOT DESPUES DE PRECIONAR 'OK'\n\nEste Contrato no tiene valides hasta que se haya dado el Deposito");
-    }
-
-  document.location.href = "#top";
-        })  
-}
-function getFecha(fe){
-          var fe=efecha.value.split("-");
-          var nd=new Date();
-           nd.setFullYear(fe[0]*1);
-          nd.setMonth(fe[1]*1-1);// alert(fe[1])
-          nd.setDate(fe[2]*1);
-          var nf=nd.getDay();
-          
-      //    alert(dd[nf*1]);alert(nf*1+"\n\n"+dd);
-     return m[fe[1]*1-1]+" "+fe[2]*1+ " "+fe[0]*1+" ("+dd[nf*1]+")";
-}
-function getHora(h){
-    h-h*1;
-    if(h.indexOf(":")>=1){
-        var hm=h.split(":");
-        h=hm[0]*1;
-        mi=hm[1];
-        if(h>12){h=h-12;h=h+":"+mi+" PM";}
-        else h=h+":"+mi+" AM";
-        return h
-    }
-    //
-    return h;
-}
     
     
     
+    */
 </script>
 
 
