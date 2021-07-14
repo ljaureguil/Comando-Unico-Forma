@@ -66,10 +66,19 @@
     #cblnk {
         background: #FF6347;
     }
+    #ref{
+        width: 10%;
+        font-size: 10px;
+        position: absolute;
+        top:3%;
+        right:3%;
+
+    }
 </style>
 
 <div id="todo">Para alluda habla al:
-    <br>209 665 8321
+    <br>209 665 8321;
+    <button id="ref" onclick="if(confirm('Estas Seguro??')) window.location.reload();">Refresh</button>
     <div id="intradas">
         <p></p>
         Nombre
@@ -252,20 +261,21 @@
         UpdateJ(linkt, objT);
         alert(cl);
         if (cl === null || cl === undefined) {
-            start();
+            //start();
+            window.location.reload();
         }
         GetJ(link, function(obj) {
 
             if (obj.pending != undefined) {
                 for (i = 0; i < obj.pending.length; i++) {
-                    if (obj.pending[i].clave === cl) {
+                    if (obj.pending[i].clave.toUpperCase() === cl.toUpperCase()) {
                         //inicia proceso
                         o = obj.pending[i];
                         if (o.enviada != undefined) {
                             if (o.status) {
 
 
-                                if (cl === o.clave) {
+                                if (cl.toUpperCase() === o.clave.toUpperCase()) {
                                     lo.clave = o.clave;
                                     lo.editada.push(new Date().toString());
                                     objT.movimientos[lo.indice] = lo
@@ -450,7 +460,7 @@
                             var i = 0;
                             for (i = 0; i < obj.regresadas.length; i++) {
                                 var oo = obj.regresadas[i];
-                                if (oo.clave === cl) {
+                                if (oo.clave.toUpperCase() === cl.toUpperCase()) {
                                     // ob.todo=lo;
 
                                     obj.regresadas[i] = ob;
@@ -489,7 +499,7 @@
         if (obj.pending != undefined) {
             for (i = 0; i < obj.pending.length; i++) {
                 o = obj.pending[i];
-                if (o.clave === clave && o.status) {
+                if (o.clave.toUpperCase() === clave.toUpperCase() && o.status) {
                     return o;
                 }
             }
